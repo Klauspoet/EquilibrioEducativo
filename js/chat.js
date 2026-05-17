@@ -51,15 +51,31 @@ btnEnviar.addEventListener('click', async () => {
     if (!texto) return
 
     const { data: { user } } = await supabase.auth.getUser()
+    const { data: usuarioData } = await supabase.from('usuarios').select('nombre').eq('id', user.id).single()
 
+    // Mostrar mensaje instantáneamente
+    const div = document.createElement('div')
+    div.className = 'mensaje propio'
+    div.innerHTML = `
+        <span class="nombre">${usuarioData.nombre}</span>
+        <p>${texto}</p>
+        <span class="hora">${new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}</span>
+    `
+    mensajesDiv.appendChild(div)
+    mensajesDiv.scrollTop = mensajesDiv.scrollHeight
+
+    inputMensaje.value = ''
+
+    // Guardar en base de datos
     await supabase.from('mensajes').insert({
         chat_id: chatId,
         enviado_por: user.id,
         texto: texto
     })
+})
 
     inputMensaje.value = ''
-})
+
 
 inputMensaje.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') btnEnviar.click()
