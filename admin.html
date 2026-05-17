@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin — Equilibrio Educativo</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <div class="app-layout">
+
+        <nav class="sidebar">
+            <img src="img/logo.png" class="sidebar-logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 12px; padding: 4px;" alt="Logo">
+            <a href="admin.html" class="sidebar-icon active" title="Inicio">🏠</a>
+            <a href="#" class="sidebar-icon" title="Psicoorientadores">👨‍⚕️</a>
+            <a href="#" class="sidebar-icon" title="Estudiantes">🎓</a>
+            <a href="#" class="sidebar-icon bottom" title="Cerrar sesión" id="btn-logout">🚪</a>
+        </nav>
+
+        <main class="page-content">
+            <div class="contenedor">
+                <h2>Panel de Administrador 👨‍💼</h2>
+                <p>Gestiona los psicoorientadores y estudiantes del sistema.</p>
+
+                <h2 style="margin-bottom: 16px;">Psicoorientadores pendientes</h2>
+                <div id="lista-pendientes" class="lista-cards"></div>
+
+                <h2 style="margin-top: 32px; margin-bottom: 16px;">Psicoorientadores aprobados</h2>
+                <div id="lista-aprobados" class="lista-cards"></div>
+
+                <h2 style="margin-top: 32px; margin-bottom: 16px;">Estudiantes registrados</h2>
+                <div id="lista-estudiantes" class="lista-cards"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <script type="module" src="js/admin.js"></script>
+</body>
+</html>

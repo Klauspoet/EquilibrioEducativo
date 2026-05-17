@@ -82,13 +82,17 @@ if (esLogin) {
             .single()
 
         // Redirigir según rol
+      // Redirigir según rol
         if (usuario.rol === 'estudiante') {
             window.location.href = 'estudiante.html'
-        } else {
+        } else if (usuario.rol === 'psicoorientador') {
             window.location.href = 'psicoorientador.html'
+        } else if (usuario.rol === 'admin') {
+            window.location.href = 'admin.html'
         }
     })
 }
+
 // Cerrar sesión
 const btnLogout = document.getElementById('btn-logout')
 if (btnLogout) {
