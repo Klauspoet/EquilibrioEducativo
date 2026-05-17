@@ -1,6 +1,5 @@
 import { supabase } from './supabase.js'
 
-// Detectar en qué página estamos
 const esRegistro = document.getElementById('btn-registro')
 const esLogin = document.getElementById('btn-login')
 
@@ -13,24 +12,39 @@ if (esRegistro) {
         const rol = document.getElementById('rol').value
         const mensaje = document.getElementById('mensaje')
 
-        // Validar correo institucional
         if (!correo.endsWith('.edu.co')) {
             mensaje.textContent = 'Debes usar tu correo institucional del colegio.'
             return
         }
 
-        // Crear usuario en Supabase Auth
+        if (!nombre || !correo || !contrasena) {
+            mensaje.textContent = 'Por favor completa todos los campos.'
+            return
+        }
+
+        // Si es psicoorientador verificar que subió título
+        if (rol === 'psicoorientador') {
+            const titulo = document.getElementById('titulo').files[0]
+            if (!titulo) {
+                mensaje.textContent = 'Debes subir tu título profesional.'
+                return
+            }
+        }
+
+        mensaje.style.color = 'gray'
+        mensaje.textContent = 'Creando cuenta...'
+
         const { data, error } = await supabase.auth.signUp({
             email: correo,
             password: contrasena
         })
 
         if (error) {
+            mensaje.style.color = 'red'
             mensaje.textContent = 'Error: ' + error.message
             return
         }
 
-        // Guardar en tabla usuarios
         const { error: errorDB } = await supabase.from('usuarios').insert({
             id: data.user.id,
             nombre: nombre,
@@ -39,21 +53,46 @@ if (esRegistro) {
         })
 
         if (errorDB) {
+            mensaje.style.color = 'red'
             mensaje.textContent = 'Error al guardar usuario: ' + errorDB.message
             return
         }
 
-        // Si es psicoorientador, guardar en tabla psicoorientadores
         if (rol === 'psicoorientador') {
+            const especialidad = document.getElementById('especialidad').value
+            const titulo = document.getElementById('titulo').files[0]
+
+            // Subir título al storage
+            const extension = titulo.name.split('.').pop()
+            const nombreArchivo = `${data.user.id}.${extension}`
+
+            const { error: errorStorage } = await supabase.storage
+                .from('titulos')
+                .upload(nombreArchivo, titulo)
+
+            if (errorStorage) {
+                mensaje.style.color = 'red'
+                mensaje.textContent = 'Error al subir título: ' + errorStorage.message
+                return
+            }
+
             await supabase.from('psicoorientadores').insert({
                 usuario_id: data.user.id,
-                especialidad: '',
-                descripcion: ''
+                especialidad: especialidad,
+                descripcion: '',
+                disponible: false,
+                estado: 'pendiente'
             })
-        }
 
-        mensaje.style.color = 'green'
-        mensaje.textContent = '¡Cuenta creada! Revisa tu correo para confirmar.'
+            mensaje.style.color = 'green'
+            mensaje.textContent = '¡Cuenta creada! Tu título será revisado por el administrador.'
+        } else {
+            mensaje.style.color = 'green'
+            mensaje.textContent = '¡Cuenta creada! Ya puedes iniciar sesión.'
+            setTimeout(() => {
+                window.location.href = 'login.html'
+            }, 2000)
+        }
     })
 }
 
@@ -74,18 +113,32 @@ if (esLogin) {
             return
         }
 
-        // Obtener rol del usuario
         const { data: usuario } = await supabase
             .from('usuarios')
             .select('rol')
             .eq('id', data.user.id)
             .single()
 
-        // Redirigir según rol
-      // Redirigir según rol
         if (usuario.rol === 'estudiante') {
             window.location.href = 'estudiante.html'
         } else if (usuario.rol === 'psicoorientador') {
+            // Verificar si está aprobado
+            const { data: psico } = await supabase
+                .from('psicoorientadores')
+                .select('estado')
+                .eq('usuario_id', data.user.id)
+                .single()
+
+            if (psico.estado === 'pendiente') {
+                await supabase.auth.signOut()
+                mensaje.textContent = 'Tu cuenta está pendiente de aprobación por el administrador.'
+                return
+            } else if (psico.estado === 'rechazado') {
+                await supabase.auth.signOut()
+                mensaje.textContent = 'Tu cuenta fue rechazada. Contacta al administrador.'
+                return
+            }
+
             window.location.href = 'psicoorientador.html'
         } else if (usuario.rol === 'admin') {
             window.location.href = 'admin.html'

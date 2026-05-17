@@ -9,7 +9,8 @@
 <body>
 
     <header>
-<img src="img/logo.png" style="width: 80px; vertical-align: middle; margin-right: 10px; mix-blend-mode: multiply;" alt="Logo">
+        <img src="img/logo.png" style="width: 80px; vertical-align: middle; margin-right: 10px; mix-blend-mode: multiply;" alt="Logo">
+        <h1>Equilibrio Educativo</h1>
         <p>Crea tu cuenta</p>
     </header>
 
@@ -34,10 +35,21 @@
 
             <div class="campo">
                 <label>Soy...</label>
-                <select id="rol">
+                <select id="rol" onchange="mostrarCampoTitulo()">
                     <option value="estudiante">Estudiante</option>
                     <option value="psicoorientador">Psicoorientador</option>
                 </select>
+            </div>
+
+            <div class="campo" id="campo-titulo" style="display:none;">
+                <label>Título profesional (PDF o imagen)</label>
+                <input type="file" id="titulo" accept=".pdf,.jpg,.jpeg,.png">
+                <p style="font-size:0.78rem; color:#8a8aaa; margin-top:6px;">Tu cuenta quedará pendiente hasta que el administrador verifique tu título.</p>
+            </div>
+
+            <div class="campo" id="campo-especialidad" style="display:none;">
+                <label>Especialidad</label>
+                <input type="text" id="especialidad" placeholder="Ej: Ansiedad y estrés">
             </div>
 
             <button class="btn-principal" id="btn-registro" style="width:100%; margin-top:10px;">
@@ -45,7 +57,7 @@
             </button>
 
             <p style="margin-top:16px; color:#555;">
-                ¿Ya tienes cuenta? <a href="login.html" style="color:#2d6a4f;">Inicia sesión</a>
+                ¿Ya tienes cuenta? <a href="login.html" style="color:#CDB4DB;">Inicia sesión</a>
             </p>
 
             <p id="mensaje" style="margin-top:12px; color:red;"></p>
@@ -56,6 +68,13 @@
         <p>© 2025 Equilibrio Educativo — Todos los derechos reservados</p>
     </footer>
 
+    <script>
+        function mostrarCampoTitulo() {
+            const rol = document.getElementById('rol').value
+            document.getElementById('campo-titulo').style.display = rol === 'psicoorientador' ? 'block' : 'none'
+            document.getElementById('campo-especialidad').style.display = rol === 'psicoorientador' ? 'block' : 'none'
+        }
+    </script>
     <script type="module" src="js/auth.js"></script>
 </body>
 </html>

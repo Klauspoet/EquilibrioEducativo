@@ -8,7 +8,6 @@ async function cargarPanel() {
         return
     }
 
-    // Verificar que sea admin
     const { data: usuario } = await supabase
         .from('usuarios')
         .select('rol')
@@ -40,16 +39,45 @@ async function cargarPsicoorientadores() {
         return
     }
 
-    psicos.forEach(psico => {
+    for (const psico of psicos) {
         const card = document.createElement('div')
         card.className = 'card-psico'
+
+        // Obtener URL del título
+        const extensiones = ['pdf', 'jpg', 'jpeg', 'png']
+        let urlTitulo = null
+
+        for (const ext of extensiones) {
+            const { data } = await supabase.storage
+                .from('titulos')
+                .createSignedUrl(`${psico.usuario_id}.${ext}`, 3600)
+            if (data) {
+                urlTitulo = data.signedUrl
+                break
+            }
+        }
+
+        const botonTitulo = urlTitulo
+            ? `<a href="${urlTitulo}" target="_blank" style="
+                display:inline-block;
+                background: #f8f5ff;
+                color: #3a3a5c;
+                padding: 8px 16px;
+                border-radius: 10px;
+                text-decoration: none;
+                font-size: 0.85rem;
+                margin-bottom: 10px;
+                border: 1.5px solid #CDB4DB;
+              ">📄 Ver título</a>`
+            : '<p style="color:#8a8aaa; font-size:0.85rem;">Sin título subido</p>'
 
         if (psico.estado === 'pendiente') {
             card.innerHTML = `
                 <h3>${psico.usuarios.nombre}</h3>
                 <p>${psico.usuarios.correo}</p>
                 <p>${psico.especialidad || 'Sin especialidad'}</p>
-                <div style="display:flex; gap:8px; margin-top:12px;">
+                ${botonTitulo}
+                <div style="display:flex; gap:8px; margin-top:8px;">
                     <button class="btn-principal" onclick="aprobar('${psico.usuario_id}')">✅ Aprobar</button>
                     <button class="btn-secundario" onclick="rechazar('${psico.usuario_id}')">❌ Rechazar</button>
                 </div>
@@ -60,11 +88,12 @@ async function cargarPsicoorientadores() {
                 <h3>${psico.usuarios.nombre}</h3>
                 <p>${psico.usuarios.correo}</p>
                 <p>${psico.especialidad || 'Sin especialidad'}</p>
-                <p style="color:#B7E4C7; font-weight:600;">✅ Aprobado</p>
+                ${botonTitulo}
+                <p style="color:#B7E4C7; font-weight:600; margin-top:8px;">✅ Aprobado</p>
             `
             aprobados.appendChild(card)
         }
-    })
+    }
 
     if (pendientes.innerHTML === '') {
         pendientes.innerHTML = '<p style="color:#8a8aaa;">No hay psicoorientadores pendientes.</p>'
@@ -113,7 +142,6 @@ window.rechazar = async (id) => {
     cargarPsicoorientadores()
 }
 
-// Cerrar sesión
 const btnLogout = document.getElementById('btn-logout')
 if (btnLogout) {
     btnLogout.addEventListener('click', async () => {
