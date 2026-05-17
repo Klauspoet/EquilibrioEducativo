@@ -449,3 +449,67 @@ main {
     border-radius: 50px;
     padding: 14px 24px;
 }
+/* ── MODO OSCURO ── */
+body.dark {
+    background: #1a1a2e;
+    color: #e0e0f0;
+}
+
+body.dark .tarjeta-inicio,
+body.dark .card-psico,
+body.dark .mensajes,
+body.dark .chat-topbar,
+body.dark .emo-card,
+body.dark .login-card {
+    background: #16213e;
+    color: #e0e0f0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+body.dark .campo input,
+body.dark .campo select,
+body.dark .input-chat input {
+    background: #0f3460;
+    border-color: #CDB4DB;
+    color: #e0e0f0;
+}
+
+body.dark .campo label {
+    color: #CDB4DB;
+}
+
+body.dark .contenedor h2,
+body.dark .tarjeta-inicio h2 {
+    color: #e0e0f0;
+}
+
+body.dark .contenedor > p,
+body.dark .tarjeta-inicio p,
+body.dark .card-psico p {
+    color: #a0a0c0;
+}
+
+body.dark .mensaje.otro {
+    background: #0f3460;
+    color: #e0e0f0;
+}
+
+body.dark .page-content {
+    background: #1a1a2e;
+}
+
+body.dark header {
+    background: linear-gradient(135deg, #1a3a5c, #3d2a5c);
+}
+
+body.dark footer {
+    background: #0f0f1a;
+}
+
+body.dark .emo-card span {
+    color: #a0a0c0;
+}
+
+body.dark .sidebar {
+    background: #0f0f1a;
+}
