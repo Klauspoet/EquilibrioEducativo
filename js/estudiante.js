@@ -75,10 +75,14 @@ window.iniciarChat = async (psicoorientadorId) => {
 
 window.addEventListener('load', () => {
     document.querySelectorAll('.emo-card').forEach(card => {
-        card.addEventListener('click', () => {
+       card.addEventListener('click', async () => {
             document.querySelectorAll('.emo-card').forEach(c => c.classList.remove('selected'))
             card.classList.add('selected')
-
+            const { data: { user } } = await supabase.auth.getUser()
+await supabase.from('registros_emocionales').insert({
+    estudiante_id: user.id,
+    emocion: emocion
+})
             const spans = card.querySelectorAll('span')
             const emocion = spans[spans.length - 1].textContent.trim()
             const info = mensajesEmocionales[emocion]

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial — Equilibrio Educativo</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="app-layout">
+
+        <nav class="sidebar">
+            <img src="img/logo.png" class="sidebar-logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 12px; padding: 4px;" alt="Logo">
+            <a href="estudiante.html" class="sidebar-icon" title="Inicio">🏠</a>
+            <a href="chat.html" class="sidebar-icon" title="Chat">💬</a>
+            <a href="historial.html" class="sidebar-icon active" title="Historial">📊</a>
+            <a href="#" class="sidebar-icon bottom" title="Cerrar sesión" id="btn-logout">🚪</a>
+        </nav>
+
+        <main class="page-content">
+            <div class="contenedor">
+                <h2>Tu historial emocional 📊</h2>
+                <p>Aquí puedes ver cómo te has sentido con el tiempo.</p>
+
+                <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(160,140,200,0.1); margin-bottom: 24px;">
+                    <canvas id="graficaEmociones" height="100"></canvas>
+                </div>
+
+                <h2 style="margin-bottom: 16px;">Registros recientes</h2>
+                <div id="lista-registros" class="lista-cards"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <script type="module" src="js/historial.js"></script>
+</body>
+</html>
