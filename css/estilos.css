@@ -1,0 +1,451 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f8f5ff;
+    color: #3a3a5c;
+    min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+    background: linear-gradient(135deg, #A7C7E7, #CDB4DB);
+    color: white;
+    text-align: center;
+    padding: 36px 20px;
+}
+
+header h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+header p {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    font-weight: 300;
+}
+
+/* ── FOOTER ── */
+footer {
+    background: #3a3a5c;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 16px;
+    font-size: 0.78rem;
+}
+
+/* ── TARJETA INICIO ── */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: calc(100vh - 160px);
+}
+
+.tarjeta-inicio {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(160,140,200,0.15);
+}
+
+.tarjeta-inicio h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #3a3a5c;
+    margin-bottom: 12px;
+}
+
+.tarjeta-inicio p {
+    color: #8a8aaa;
+    margin-bottom: 28px;
+    line-height: 1.7;
+    font-size: 0.9rem;
+}
+
+/* ── BOTONES ── */
+.botones {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-principal {
+    background: linear-gradient(135deg, #A7C7E7, #CDB4DB);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: opacity 0.2s, transform 0.2s;
+    display: inline-block;
+}
+
+.btn-principal:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-secundario {
+    background: white;
+    color: #3a3a5c;
+    padding: 12px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 2px solid #CDB4DB;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-secundario:hover {
+    background: #f8f5ff;
+}
+
+/* ── CAMPOS DE FORMULARIO ── */
+.campo {
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #8a8aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #ede8f5;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    color: #3a3a5c;
+    background: #f8f5ff;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: #CDB4DB;
+    background: white;
+}
+
+/* ── LAYOUT CON SIDEBAR ── */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 64px;
+    background: #3a3a5c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    gap: 8px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebar-logo {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #A7C7E7, #CDB4DB);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.sidebar-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.sidebar-icon:hover,
+.sidebar-icon.active {
+    background: rgba(167,199,231,0.2);
+    color: #A7C7E7;
+}
+
+.sidebar-icon.bottom {
+    margin-top: auto;
+}
+
+.page-content {
+    margin-left: 64px;
+    flex: 1;
+    padding: 32px;
+    min-height: 100vh;
+}
+
+/* ── CONTENEDOR GENERAL ── */
+.contenedor {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.contenedor h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #3a3a5c;
+    margin-bottom: 6px;
+}
+
+.contenedor > p {
+    color: #8a8aaa;
+    margin-bottom: 28px;
+    font-size: 0.9rem;
+}
+
+/* ── CARDS DE PSICOORIENTADORES ── */
+.lista-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.card-psico {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(160,140,200,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-psico:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(160,140,200,0.18);
+}
+
+.card-psico h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3a3a5c;
+    margin-bottom: 6px;
+}
+
+.card-psico p {
+    color: #8a8aaa;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.card-psico .btn-principal {
+    width: 100%;
+    text-align: center;
+    margin-top: 14px;
+    padding: 10px;
+}
+
+/* ── EMOJIS DE EMOCIÓN ── */
+.emotion-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.emo-card {
+    flex: 1;
+    min-width: 70px;
+    background: white;
+    border-radius: 14px;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 12px rgba(160,140,200,0.08);
+    transition: all 0.2s;
+}
+
+.emo-card:hover {
+    border-color: #CDB4DB;
+    transform: translateY(-2px);
+}
+
+.emo-card.selected {
+    border-color: #CDB4DB;
+    background: #f8f5ff;
+}
+
+.emo-card .emoji {
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.emo-card span {
+    font-size: 0.75rem;
+    color: #8a8aaa;
+    font-weight: 500;
+}
+
+/* ── CHAT ── */
+.contenedor-chat {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px);
+}
+
+.chat-topbar {
+    background: white;
+    border-radius: 16px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(160,140,200,0.1);
+}
+
+.chat-avatar {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #CDB4DB, #b898c9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.chat-topbar h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #3a3a5c;
+}
+
+.chat-topbar p {
+    font-size: 0.78rem;
+    color: #B7E4C7;
+}
+
+.mensajes {
+    flex: 1;
+    overflow-y: auto;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(160,140,200,0.08);
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mensaje {
+    max-width: 72%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.mensaje.otro {
+    background: #f8f5ff;
+    color: #3a3a5c;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+}
+
+.mensaje.propio {
+    background: linear-gradient(135deg, #A7C7E7, #CDB4DB);
+    color: white;
+    border-bottom-right-radius: 4px;
+    align-self: flex-end;
+}
+
+.mensaje .nombre {
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+    opacity: 0.75;
+}
+
+.mensaje .hora {
+    font-size: 0.68rem;
+    display: block;
+    margin-top: 5px;
+    opacity: 0.65;
+    text-align: right;
+}
+
+.input-chat {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-chat input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1.5px solid #ede8f5;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    color: #3a3a5c;
+    background: white;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.input-chat input:focus {
+    border-color: #CDB4DB;
+}
+
+.input-chat .btn-principal {
+    border-radius: 50px;
+    padding: 14px 24px;
+}
