@@ -5,12 +5,11 @@ const chatId = params.get('chat_id')
 const mensajesDiv = document.getElementById('mensajes')
 const inputMensaje = document.getElementById('texto-mensaje')
 const btnEnviar = document.getElementById('btn-enviar')
-// Pedir permiso para notificaciones
+
 if (Notification.permission === 'default') {
     Notification.requestPermission()
 }
 
-// Función para mostrar notificación
 function mostrarNotificacion(nombre, mensaje) {
     if (Notification.permission === 'granted') {
         new Notification(`Mensaje de ${nombre}`, {
@@ -22,7 +21,7 @@ function mostrarNotificacion(nombre, mensaje) {
 
 async function cargarInfoChat() {
     const { data: { user } } = await supabase.auth.getUser()
-    
+
     const { data: chat } = await supabase
         .from('chats')
         .select('*, estudiante:usuarios!chats_estudiante_id_fkey(nombre), psicoorientador:usuarios!chats_psicoorientador_id_fkey(nombre)')
@@ -30,7 +29,6 @@ async function cargarInfoChat() {
         .single()
 
     if (chat) {
-        // Mostrar el nombre del otro usuario
         const esEstudiante = chat.estudiante_id === user.id
         const nombreReceptor = esEstudiante ? chat.psicoorientador.nombre : chat.estudiante.nombre
         document.getElementById('nombre-receptor').textContent = nombreReceptor
@@ -72,7 +70,6 @@ btnEnviar.addEventListener('click', async () => {
     const { data: { user } } = await supabase.auth.getUser()
     const { data: usuarioData } = await supabase.from('usuarios').select('nombre').eq('id', user.id).single()
 
-    // Mostrar mensaje instantáneamente
     const div = document.createElement('div')
     div.className = 'mensaje propio'
     div.innerHTML = `
@@ -85,7 +82,6 @@ btnEnviar.addEventListener('click', async () => {
 
     inputMensaje.value = ''
 
-    // Guardar en base de datos
     await supabase.from('mensajes').insert({
         chat_id: chatId,
         enviado_por: user.id,
@@ -93,15 +89,11 @@ btnEnviar.addEventListener('click', async () => {
     })
 })
 
-    inputMensaje.value = ''
-
-
 inputMensaje.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') btnEnviar.click()
 })
 
 supabase
-    supabase
     .channel('mensajes-' + chatId)
     .on('postgres_changes', {
         event: 'INSERT',
@@ -111,7 +103,6 @@ supabase
     }, async (payload) => {
         cargarMensajes()
 
-        // Notificar solo si el mensaje es de otro usuario
         const { data: { user } } = await supabase.auth.getUser()
         if (payload.new.enviado_por !== user.id) {
             const { data: remitente } = await supabase
@@ -123,7 +114,7 @@ supabase
         }
     })
     .subscribe()
-// Cerrar sesión
+
 const btnLogout = document.getElementById('btn-logout')
 if (btnLogout) {
     btnLogout.addEventListener('click', async () => {
@@ -131,3 +122,6 @@ if (btnLogout) {
         window.location.href = 'index.html'
     })
 }
+
+cargarInfoChat()
+cargarMensajes()
