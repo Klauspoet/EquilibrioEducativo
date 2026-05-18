@@ -45,6 +45,7 @@ async function cargarPsicoorientadores() {
         lista.appendChild(card)
     })
 }
+
 window.iniciarChat = async (psicoorientadorId) => {
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -61,8 +62,8 @@ window.iniciarChat = async (psicoorientadorId) => {
         .maybeSingle()
 
     if (chatExistente) {
-        console.log('chat existente:', chatExistente.id)
-        window.location.href = `chat.html?chat_id=${chatExistente.id}`
+        localStorage.setItem('chat_id_actual', chatExistente.id)
+        window.location.href = 'chat.html'
         return
     }
 
@@ -75,38 +76,25 @@ window.iniciarChat = async (psicoorientadorId) => {
         .select()
         .single()
 
-    console.log('nuevo chat:', nuevoChat.id)
-    window.location.href = `chat.html?chat_id=${nuevoChat.id}`
+    localStorage.setItem('chat_id_actual', nuevoChat.id)
+    window.location.href = 'chat.html'
 }
 
-    const { data: nuevoChat } = await supabase
-        .from('chats')
-        .insert({
-            estudiante_id: user.id,
-            psicoorientador_id: psicoorientadorId
-        })
-        .select()
-        .single()
-
-   console.log('nuevo chat:', nuevoChat.id)
-window.location.href = `chat.html?chat_id=${nuevoChat.id}`
 window.addEventListener('load', () => {
     document.querySelectorAll('.emo-card').forEach(card => {
-       card.addEventListener('click', async () => {
+        card.addEventListener('click', async () => {
             document.querySelectorAll('.emo-card').forEach(c => c.classList.remove('selected'))
             card.classList.add('selected')
-const spans = card.querySelectorAll('span')
-const emocion = spans[spans.length - 1].textContent.trim()
-const { data: { user } } = await supabase.auth.getUser()
-await supabase.from('registros_emocionales').insert({
-    estudiante_id: user.id,
-    emocion: emocion
-})
-})
+
             const spans = card.querySelectorAll('span')
             const emocion = spans[spans.length - 1].textContent.trim()
-            const info = mensajesEmocionales[emocion]
+            const { data: { user } } = await supabase.auth.getUser()
+            await supabase.from('registros_emocionales').insert({
+                estudiante_id: user.id,
+                emocion: emocion
+            })
 
+            const info = mensajesEmocionales[emocion]
             if (!info) return
 
             let sugerencia = document.getElementById('sugerencia-emocional')
@@ -145,8 +133,8 @@ await supabase.from('registros_emocionales').insert({
             `
         })
     })
-cargarPsicoorientadores()
-// Cerrar sesión
+})
+
 const btnLogout = document.getElementById('btn-logout')
 if (btnLogout) {
     btnLogout.addEventListener('click', async () => {
@@ -154,3 +142,5 @@ if (btnLogout) {
         window.location.href = 'index.html'
     })
 }
+
+cargarPsicoorientadores()
