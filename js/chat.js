@@ -5,6 +5,20 @@ const chatId = params.get('chat_id')
 const mensajesDiv = document.getElementById('mensajes')
 const inputMensaje = document.getElementById('texto-mensaje')
 const btnEnviar = document.getElementById('btn-enviar')
+// Pedir permiso para notificaciones
+if (Notification.permission === 'default') {
+    Notification.requestPermission()
+}
+
+// Función para mostrar notificación
+function mostrarNotificacion(nombre, mensaje) {
+    if (Notification.permission === 'granted') {
+        new Notification(`Mensaje de ${nombre}`, {
+            body: mensaje,
+            icon: 'img/logo.png'
+        })
+    }
+}
 
 async function cargarInfoChat() {
     const { data: chat } = await supabase
@@ -82,19 +96,28 @@ inputMensaje.addEventListener('keypress', (e) => {
 })
 
 supabase
+    supabase
     .channel('mensajes-' + chatId)
     .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
         table: 'mensajes',
         filter: `chat_id=eq.${chatId}`
-    }, () => {
+    }, async (payload) => {
         cargarMensajes()
+
+        // Notificar solo si el mensaje es de otro usuario
+        const { data: { user } } = await supabase.auth.getUser()
+        if (payload.new.enviado_por !== user.id) {
+            const { data: remitente } = await supabase
+                .from('usuarios')
+                .select('nombre')
+                .eq('id', payload.new.enviado_por)
+                .single()
+            mostrarNotificacion(remitente.nombre, payload.new.texto)
+        }
     })
     .subscribe()
-
-cargarInfoChat()
-cargarMensajes()
 // Cerrar sesión
 const btnLogout = document.getElementById('btn-logout')
 if (btnLogout) {
