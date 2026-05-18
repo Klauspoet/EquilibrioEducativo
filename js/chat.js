@@ -20,20 +20,18 @@ function mostrarNotificacion(nombre, mensaje) {
 }
 
 async function cargarInfoChat() {
+    console.log('chatId:', chatId)
     const { data: { user } } = await supabase.auth.getUser()
-
-    const { data: chat } = await supabase
+    console.log('user:', user)
+    
+    const { data: chat, error } = await supabase
         .from('chats')
         .select('*, estudiante:usuarios!chats_estudiante_id_fkey(nombre), psicoorientador:usuarios!chats_psicoorientador_id_fkey(nombre)')
         .eq('id', chatId)
         .single()
 
-    if (chat) {
-        const esEstudiante = chat.estudiante_id === user.id
-        const nombreReceptor = esEstudiante ? chat.psicoorientador.nombre : chat.estudiante.nombre
-        document.getElementById('nombre-receptor').textContent = nombreReceptor
-        document.getElementById('avatar-receptor').textContent = nombreReceptor.charAt(0)
-    }
+    console.log('chat:', chat)
+    console.log('error:', error)
 }
 
 async function cargarMensajes() {
