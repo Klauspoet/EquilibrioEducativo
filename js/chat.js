@@ -21,15 +21,20 @@ function mostrarNotificacion(nombre, mensaje) {
 }
 
 async function cargarInfoChat() {
+    const { data: { user } } = await supabase.auth.getUser()
+    
     const { data: chat } = await supabase
         .from('chats')
-        .select('*, usuarios!chats_psicoorientador_id_fkey(nombre)')
+        .select('*, estudiante:usuarios!chats_estudiante_id_fkey(nombre), psicoorientador:usuarios!chats_psicoorientador_id_fkey(nombre)')
         .eq('id', chatId)
         .single()
 
     if (chat) {
-        document.getElementById('nombre-receptor').textContent = chat.usuarios.nombre
-        document.getElementById('avatar-receptor').textContent = chat.usuarios.nombre.charAt(0)
+        // Mostrar el nombre del otro usuario
+        const esEstudiante = chat.estudiante_id === user.id
+        const nombreReceptor = esEstudiante ? chat.psicoorientador.nombre : chat.estudiante.nombre
+        document.getElementById('nombre-receptor').textContent = nombreReceptor
+        document.getElementById('avatar-receptor').textContent = nombreReceptor.charAt(0)
     }
 }
 
