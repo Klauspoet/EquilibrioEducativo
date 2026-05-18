@@ -45,24 +45,39 @@ async function cargarPsicoorientadores() {
         lista.appendChild(card)
     })
 }
-
 window.iniciarChat = async (psicoorientadorId) => {
     const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+        window.location.href = 'login.html'
+        return
+    }
 
     const { data: chatExistente } = await supabase
         .from('chats')
         .select('id')
         .eq('estudiante_id', user.id)
         .eq('psicoorientador_id', psicoorientadorId)
+        .maybeSingle()
+
+    if (chatExistente) {
+        console.log('chat existente:', chatExistente.id)
+        window.location.href = `chat.html?chat_id=${chatExistente.id}`
+        return
+    }
+
+    const { data: nuevoChat } = await supabase
+        .from('chats')
+        .insert({
+            estudiante_id: user.id,
+            psicoorientador_id: psicoorientadorId
+        })
+        .select()
         .single()
 
-  if (chatExistente) {
-    console.log('chat existente:', chatExistente.id)
-    window.location.href = `chat.html?chat_id=${chatExistente.id}`
-    return
+    console.log('nuevo chat:', nuevoChat.id)
+    window.location.href = `chat.html?chat_id=${nuevoChat.id}`
 }
-        console.log
-    }
 
     const { data: nuevoChat } = await supabase
         .from('chats')
