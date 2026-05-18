@@ -103,12 +103,13 @@ if (esLogin) {
         const contrasena = document.getElementById('contrasena').value
         const mensaje = document.getElementById('mensaje')
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: correo,
-            password: contrasena
-            console.log('sesion:', data.session)
+       const { data, error } = await supabase.auth.signInWithPassword({
+    email: correo,
+    password: contrasena
+})
+
+console.log('sesion:', data.session)
 console.log('token:', data.session?.access_token)
-        })
 
         if (error) {
             mensaje.textContent = 'Error: ' + error.message
