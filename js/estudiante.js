@@ -56,9 +56,12 @@ window.iniciarChat = async (psicoorientadorId) => {
         .eq('psicoorientador_id', psicoorientadorId)
         .single()
 
-    if (chatExistente) {
-        window.location.href = `chat.html?chat_id=${chatExistente.id}`
-        return
+  if (chatExistente) {
+    console.log('chat existente:', chatExistente.id)
+    window.location.href = `chat.html?chat_id=${chatExistente.id}`
+    return
+}
+        console.log
     }
 
     const { data: nuevoChat } = await supabase
@@ -70,9 +73,8 @@ window.iniciarChat = async (psicoorientadorId) => {
         .select()
         .single()
 
-    window.location.href = `chat.html?chat_id=${nuevoChat.id}`
-}
-
+   console.log('nuevo chat:', nuevoChat.id)
+window.location.href = `chat.html?chat_id=${nuevoChat.id}`
 window.addEventListener('load', () => {
     document.querySelectorAll('.emo-card').forEach(card => {
        card.addEventListener('click', async () => {
