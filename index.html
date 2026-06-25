@@ -3,34 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equilibrio Educativo</title>
+    <title>Equilibrio Educativo — Tu espacio seguro de bienestar emocional</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <meta name="description" content="Equilibrio Educativo — Tu espacio seguro de bienestar emocional. Conecta con psicoorientadores de tu colegio de forma privada y segura.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/estilos.css">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1F2937;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        a {
+            text-decoration: none;
+        }
+
+        .landing-hero {
+            background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+            color: #fff;
+            text-align: center;
+            padding: 80px 24px 72px;
+            position: relative;
+            overflow: hidden;
+        }
+        .landing-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.12) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .landing-hero > * {
+            position: relative;
+            z-index: 1;
+        }
+        .landing-hero .hero-logo {
+            width: 140px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        .landing-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0 0 12px;
+            line-height: 1.15;
+        }
+        .landing-hero p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 520px;
+            margin: 0 auto 36px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .hero-buttons .btn-primary {
+            background: #fff;
+            color: #3B82F6;
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+        }
+        .hero-buttons .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .hero-buttons .btn-secondary {
+            background: transparent;
+            color: #fff;
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.25s ease;
+            border: 2px solid rgba(255,255,255,0.6);
+            cursor: pointer;
+            display: inline-block;
+        }
+        .hero-buttons .btn-secondary:hover {
+            border-color: #fff;
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .landing-section {
+            padding: 80px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .landing-section h2 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            text-align: center;
+            margin: 0 0 12px;
+            color: #1F2937;
+        }
+        .landing-section .section-sub {
+            text-align: center;
+            color: #6B7280;
+            font-size: 1rem;
+            max-width: 520px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .step-card {
+            text-align: center;
+            padding: 32px 20px;
+        }
+        .step-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3B82F6, #10B981);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(59,130,246,0.2);
+        }
+        .step-number {
+            display: inline-block;
+            background: #EFF6FF;
+            color: #3B82F6;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+        .step-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 8px;
+            color: #1F2937;
+        }
+        .step-card p {
+            font-size: 0.88rem;
+            color: #6B7280;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .why-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 36px 28px;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .why-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+        }
+        .why-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 18px;
+        }
+        .why-icon.blue {
+            background: #EFF6FF;
+            color: #3B82F6;
+        }
+        .why-icon.teal {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+        .why-icon.purple {
+            background: #F5F3FF;
+            color: #8B5CF6;
+        }
+        .why-card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 0 0 8px;
+            color: #1F2937;
+        }
+        .why-card p {
+            font-size: 0.88rem;
+            color: #6B7280;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .landing-footer {
+            background: #1F2937;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 28px 24px;
+            font-size: 0.82rem;
+        }
+        .landing-footer a {
+            color: rgba(255,255,255,0.6);
+            transition: color 0.2s;
+        }
+        .landing-footer a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .landing-hero {
+                padding: 56px 20px 48px;
+            }
+            .landing-hero h1 {
+                font-size: 1.8rem;
+            }
+            .landing-hero p {
+                font-size: 1rem;
+            }
+            .landing-hero .hero-logo {
+                width: 110px;
+            }
+            .hero-buttons .btn-primary,
+            .hero-buttons .btn-secondary {
+                padding: 12px 28px;
+                font-size: 0.9rem;
+            }
+            .landing-section {
+                padding: 56px 20px;
+            }
+            .landing-section h2 {
+                font-size: 1.5rem;
+            }
+            .steps-grid,
+            .why-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .step-card {
+                padding: 24px 16px;
+            }
+            .why-card {
+                padding: 28px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-       <img src="/img/logo.png" style="width: 180px; margin-bottom: 12px; mix-blend-mode: multiply;" alt="Equilibrio Educativo">
-        <p>Tu espacio seguro de bienestar emocional</p>
-    </header>
+    <section class="landing-hero">
+        <img src="/img/logo.png" alt="Equilibrio Educativo" class="hero-logo">
+        <h1>Tu bienestar emocional importa</h1>
+        <p>Conecta con psicoorientadores de tu colegio de forma privada, segura y sin juicios. Estamos aquí para apoyarte.</p>
+        <div class="hero-buttons">
+            <a href="login.html" class="btn-primary">Iniciar sesión</a>
+            <a href="registro.html" class="btn-secondary">Registrarse</a>
+        </div>
+    </section>
 
-    <main>
-        <div class="tarjeta-inicio">
-            <h2>Bienvenido</h2>
-            <p>Aquí puedes hablar de forma privada y segura con un psicoorientador de tu colegio. Tu bienestar es lo más importante.</p>
-            <div class="botones">
-                <a href="login.html" class="btn-principal">Iniciar sesión</a>
-                <a href="registro.html" class="btn-secundario">Registrarse</a>
+    <section class="landing-section">
+        <h2>¿Cómo funciona?</h2>
+        <p class="section-sub">En solo tres pasos puedes empezar a recibir apoyo emocional desde cualquier lugar.</p>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">Paso 1</div>
+                <div class="step-icon">📝</div>
+                <h3>Regístrate</h3>
+                <p>Crea tu cuenta en segundos. Solo necesitas tu correo institucional y un nombre de usuario.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">Paso 2</div>
+                <div class="step-icon">🤝</div>
+                <h3>Conecta con tu orientador</h3>
+                <p>Elige el psicoorientador de tu confianza y agenda una conversación cuando lo necesites.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">Paso 3</div>
+                <div class="step-icon">💬</div>
+                <h3>Habla con confianza</h3>
+                <p>Chatea de forma privada y segura. Todo lo que compartes se queda entre tú y tu orientador.</p>
             </div>
         </div>
-    </main>
+    </section>
 
-    <footer>
-        <p>© 2025 Equilibrio Educativo — Todos los derechos reservados</p>
+    <section class="landing-section" style="background: #F9FAFB; max-width: none;">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <h2>¿Por qué nosotros?</h2>
+            <p class="section-sub">Creemos en un espacio donde los estudiantes puedan sentirse escuchados sin miedo al qué dirán.</p>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon blue">🔒</div>
+                    <h3>Privacidad garantizada</h3>
+                    <p>Tus conversaciones son completamente confidenciales. Nadie fuera de la plataforma puede acceder a ellas.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon teal">👨‍⚕️</div>
+                    <h3>Apoyo profesional</h3>
+                    <p>Nuestros orientadores están capacitados para brindar acompañamiento emocional y psicológico adecuado.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon purple">⏰</div>
+                    <h3>Disponible cuando lo necesitas</h3>
+                    <p>Accede desde tu celular o computadora en cualquier momento. No importa dónde estés, siempre hay alguien dispuesto a escucharte.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="landing-footer">
+        <p>© 2026 Equilibrio Educativo — Todos los derechos reservados</p>
     </footer>
 
 </body>
