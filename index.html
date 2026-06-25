@@ -46,11 +46,17 @@
             position: relative;
             z-index: 1;
         }
-        .landing-hero .hero-logo {
+        .hero-logo-wrapper {
+            background: #fff;
+            border-radius: 16px;
+            padding: 10px 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .hero-logo-wrapper img {
             width: 140px;
             height: auto;
-            margin-bottom: 20px;
-            filter: brightness(0) invert(1);
+            display: block;
         }
         .landing-hero h1 {
             font-size: 2.5rem;
@@ -286,7 +292,9 @@
 <body>
 
     <section class="landing-hero">
-        <img src="/img/logo.png" alt="Equilibrio Educativo" class="hero-logo">
+        <div class="hero-logo-wrapper">
+            <img src="/img/logo.png" alt="Equilibrio Educativo">
+        </div>
         <h1>Tu bienestar emocional importa</h1>
         <p>Conecta con psicoorientadores de tu colegio de forma privada, segura y sin juicios. Estamos aquí para apoyarte.</p>
         <div class="hero-buttons">
