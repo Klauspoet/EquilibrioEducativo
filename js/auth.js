@@ -103,11 +103,40 @@ if (esRegistro) {
           disponible: false,
           estado: 'pendiente'
         })
+      }
 
-        mostrarMensaje(mensaje, '¡Cuenta creada! Tu título será revisado por el administrador.', 'exito')
-      } else {
-        mostrarMensaje(mensaje, '¡Cuenta creada! Ya puedes iniciar sesión.', 'exito')
-        setTimeout(() => { window.location.href = 'login.html' }, 2000)
+      const { error: loginError } = await supabase.auth.signInWithPassword({
+        email: correo,
+        password: contrasena
+      })
+
+      if (loginError) {
+        mostrarMensaje(mensaje, 'Error al iniciar sesión: ' + loginError.message, 'error')
+        return
+      }
+
+      const { data: usuario } = await supabase
+        .from('usuarios')
+        .select('rol')
+        .eq('id', data.user.id)
+        .single()
+
+      if (usuario.rol === 'estudiante') {
+        window.location.href = 'estudiante.html'
+      } else if (usuario.rol === 'psicoorientador') {
+        const { data: psico } = await supabase
+          .from('psicoorientadores')
+          .select('estado')
+          .eq('usuario_id', data.user.id)
+          .single()
+
+        if (psico.estado === 'pendiente') {
+          await supabase.auth.signOut()
+          mostrarMensaje(mensaje, '¡Cuenta creada! Tu título será revisado por el administrador.', 'exito')
+          setTimeout(() => { window.location.href = 'login.html' }, 2000)
+        } else {
+          window.location.href = 'psicoorientador.html'
+        }
       }
     } catch (err) {
       mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
