@@ -126,8 +126,12 @@
             </div>
             <div class="campo">
                 <label>Contraseña</label>
-                <input type="password" id="contrasena" placeholder="Tu contraseña">
+                <div class="input-wrapper">
+                    <input type="password" id="contrasena" placeholder="Tu contraseña">
+                    <button type="button" class="toggle-password" tabindex="-1" aria-label="Mostrar contraseña">👁</button>
+                </div>
             </div>
+            <a href="recuperar-contrasena.html" class="forgot-link">¿Olvidaste tu contraseña?</a>
             <button class="btn-principal" id="btn-login" style="width:100%; margin-top:10px;">
                 Iniciar sesión
             </button>
@@ -150,5 +154,16 @@
         </div>
     </div>
     <script type="module" src="js/auth.js"></script>
+    <script>
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = btn.parentElement.querySelector('input')
+        const isPassword = input.type === 'password'
+        input.type = isPassword ? 'text' : 'password'
+        btn.textContent = isPassword ? '👁‍🗨' : '👁'
+        btn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña')
+      })
+    })
+    </script>
 </body>
 </html>

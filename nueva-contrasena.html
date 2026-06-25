@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva contraseña — Equilibrio Educativo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="Establece tu nueva contraseña en Equilibrio Educativo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+    <style>
+        .input-wrapper .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #6B7280;
+            padding: 0;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="/index.html">
+            <img src="/img/logo.png" alt="Equilibrio Educativo" class="nav-logo">
+        </a>
+        <span class="nav-brand">Equilibrio Educativo</span>
+    </nav>
+
+    <header>
+        <img src="/img/logo.png" style="width: 80px; vertical-align: middle; margin-right: 10px; mix-blend-mode: multiply;" alt="Logo">
+        <h1>Nueva contraseña</h1>
+        <p>Elige una contraseña segura para tu cuenta.</p>
+    </header>
+
+    <main>
+        <div class="tarjeta-inicio">
+            <h2>Nueva contraseña</h2>
+
+            <div class="campo">
+                <label>Nueva contraseña</label>
+                <div class="input-wrapper">
+                    <input type="password" id="contrasena" placeholder="Mínimo 6 caracteres">
+                    <button type="button" class="toggle-password" tabindex="-1" aria-label="Mostrar contraseña">👁</button>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label>Confirmar contraseña</label>
+                <div class="input-wrapper">
+                    <input type="password" id="confirmar-contrasena" placeholder="Repite tu contraseña">
+                    <button type="button" class="toggle-password" tabindex="-1" aria-label="Mostrar contraseña">👁</button>
+                </div>
+            </div>
+
+            <button class="btn-principal" id="btn-guardar" style="width:100%; margin-top:10px;">
+                Guardar contraseña
+            </button>
+
+            <p id="mensaje" style="margin-top:12px; color:#EF4444; text-align:center; font-size:0.85rem;"></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Equilibrio Educativo — Todos los derechos reservados</p>
+    </footer>
+
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
+    <script>
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = btn.parentElement.querySelector('input')
+        const isPassword = input.type === 'password'
+        input.type = isPassword ? 'text' : 'password'
+        btn.textContent = isPassword ? '👁‍🗨' : '👁'
+        btn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña')
+      })
+    })
+    </script>
+    <script type="module">
+        import { supabase } from './js/supabase.js'
+        import { mostrarMensaje, showLoader, hideLoader } from './js/utilidades.js'
+
+        const mensaje = document.getElementById('mensaje')
+        const btn = document.getElementById('btn-guardar')
+
+        btn.addEventListener('click', async () => {
+            const contrasena = document.getElementById('contrasena').value
+            const confirmar = document.getElementById('confirmar-contrasena').value
+
+            if (!contrasena || !confirmar) {
+                mostrarMensaje(mensaje, 'Por favor completa todos los campos.', 'error')
+                return
+            }
+
+            if (contrasena.length < 6) {
+                mostrarMensaje(mensaje, 'La contraseña debe tener al menos 6 caracteres.', 'error')
+                return
+            }
+
+            if (contrasena !== confirmar) {
+                mostrarMensaje(mensaje, 'Las contraseñas no coinciden.', 'error')
+                return
+            }
+
+            btn.disabled = true
+            mostrarMensaje(mensaje, 'Actualizando contraseña...', 'info')
+            showLoader()
+
+            try {
+                const { error } = await supabase.auth.updateUser({
+                    password: contrasena
+                })
+
+                if (!error) {
+                    mostrarMensaje(mensaje, 'Contraseña actualizada correctamente.', 'exito')
+                    setTimeout(() => { window.location.href = 'login.html' }, 2000)
+                } else {
+                    mostrarMensaje(mensaje, 'Ocurrió un error. Intenta de nuevo.', 'error')
+                }
+            } catch (err) {
+                mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
+            } finally {
+                btn.disabled = false
+                hideLoader()
+            }
+        })
+    </script>
+</body>
+</html>

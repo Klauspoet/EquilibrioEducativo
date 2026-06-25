@@ -852,6 +852,39 @@ body.dark .hex-inner {
     to { transform: rotate(360deg); }
 }
 
+/* ── PASSWORD TOGGLE ── */
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+.toggle-password {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #6B7280;
+  padding: 0;
+  line-height: 1;
+}
+
+/* ── FORGOT PASSWORD LINK ── */
+.forgot-link {
+  display: block;
+  text-align: right;
+  font-size: 0.82rem;
+  color: #3B82F6;
+  margin-top: -8px;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+.forgot-link:hover {
+  color: #10B981;
+}
+
 /* ── TOP NAVBAR ── */
 .top-nav {
     display: flex;

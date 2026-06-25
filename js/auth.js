@@ -46,6 +46,12 @@ if (esRegistro) {
       return
     }
 
+    const confirmarContrasena = document.getElementById('confirmar-contrasena')
+    if (confirmarContrasena && contrasena !== confirmarContrasena.value) {
+      mostrarMensaje(mensaje, 'Las contraseñas no coinciden.', 'error')
+      return
+    }
+
     if (rol === 'psicoorientador') {
       const titulo = document.getElementById('titulo').files[0]
       if (!titulo) {

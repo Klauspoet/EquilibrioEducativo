@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar contraseña — Equilibrio Educativo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="Recupera tu contraseña de Equilibrio Educativo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="/index.html">
+            <img src="/img/logo.png" alt="Equilibrio Educativo" class="nav-logo">
+        </a>
+        <span class="nav-brand">Equilibrio Educativo</span>
+    </nav>
+
+    <header>
+        <img src="/img/logo.png" style="width: 80px; vertical-align: middle; margin-right: 10px; mix-blend-mode: multiply;" alt="Logo">
+        <h1>Recuperar contraseña</h1>
+        <p>Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.</p>
+    </header>
+
+    <main>
+        <div class="tarjeta-inicio">
+            <h2>Recuperar contraseña</h2>
+
+            <div class="campo">
+                <label>Correo electrónico</label>
+                <input type="email" id="correo" placeholder="nombre@colegio.edu.co">
+            </div>
+
+            <button class="btn-principal" id="btn-enviar" style="width:100%; margin-top:10px;">
+                Enviar enlace
+            </button>
+
+            <p style="margin-top:16px; color:#6B7280; text-align:center; font-size:0.9rem;">
+                <a href="login.html" style="color:#3B82F6;">Volver a inicio de sesión</a>
+            </p>
+
+            <p id="mensaje" style="margin-top:12px; color:#EF4444; text-align:center; font-size:0.85rem;"></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Equilibrio Educativo — Todos los derechos reservados</p>
+    </footer>
+
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
+    <script type="module">
+        import { supabase } from './js/supabase.js'
+        import { mostrarMensaje, showLoader, hideLoader } from './js/utilidades.js'
+
+        const mensaje = document.getElementById('mensaje')
+        const btn = document.getElementById('btn-enviar')
+
+        btn.addEventListener('click', async () => {
+            const correo = document.getElementById('correo').value.trim()
+
+            if (!correo) {
+                mostrarMensaje(mensaje, 'Por favor ingresa tu correo.', 'error')
+                return
+            }
+
+            btn.disabled = true
+            mostrarMensaje(mensaje, 'Enviando enlace...', 'info')
+            showLoader()
+
+            try {
+                const { error } = await supabase.auth.resetPasswordForEmail(correo, {
+                    redirectTo: 'https://equilibrio-educativo.vercel.app/nueva-contrasena.html'
+                })
+
+                if (!error) {
+                    mostrarMensaje(mensaje, 'Revisa tu correo. Te enviamos el enlace de recuperación.', 'exito')
+                } else {
+                    mostrarMensaje(mensaje, 'No encontramos ese correo. Verifica e intenta de nuevo.', 'error')
+                }
+            } catch (err) {
+                mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
+            } finally {
+                btn.disabled = false
+                hideLoader()
+            }
+        })
+    </script>
+</body>
+</html>
