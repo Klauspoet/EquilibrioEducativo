@@ -22,6 +22,11 @@ if (esRegistro) {
             return
         }
 
+        if (contrasena.length < 6) {
+            mensaje.textContent = 'La contraseña debe tener al menos 6 caracteres.'
+            return
+        }
+
         // Si es psicoorientador verificar que subió título
         if (rol === 'psicoorientador') {
             const titulo = document.getElementById('titulo').files[0]
@@ -102,6 +107,11 @@ if (esLogin) {
         const correo = document.getElementById('correo').value
         const contrasena = document.getElementById('contrasena').value
         const mensaje = document.getElementById('mensaje')
+
+        if (!correo || !contrasena) {
+            mensaje.textContent = 'Por favor completa todos los campos.'
+            return
+        }
 
        const { data, error } = await supabase.auth.signInWithPassword({
     email: correo,

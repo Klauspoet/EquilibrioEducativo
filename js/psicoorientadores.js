@@ -35,7 +35,7 @@ async function cargarChats() {
 
     const lista = document.getElementById('lista-chats')
 
-    if (!chats || chats.length === 0) {
+    if (!chats?.length) {
         lista.innerHTML = '<p style="color:#8a8aaa;">No tienes conversaciones activas aún.</p>'
         return
     }
@@ -46,7 +46,7 @@ async function cargarChats() {
         card.innerHTML = `
             <h3>${chat.usuarios.nombre}</h3>
             <p>Conversación activa</p>
-            <button class="btn-principal" onclick="window.location.href='chat.html?chat_id=${chat.id}'">
+            <button class="btn-principal" onclick="localStorage.setItem('chat_id_actual', '${chat.id}'); window.location.href='chat.html'">
                 Abrir chat
             </button>
         `

@@ -513,3 +513,119 @@ body.dark .emo-card span {
 body.dark .sidebar {
     background: #0f0f1a;
 }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    .app-layout {
+        flex-direction: column;
+        padding-bottom: 70px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: center;
+        padding: 8px 12px;
+        gap: 4px;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        z-index: 100;
+    }
+
+    .sidebar-logo {
+        display: none;
+    }
+
+    .sidebar-icon.bottom {
+        margin-top: 0;
+    }
+
+    .page-content {
+        margin-left: 0;
+        padding: 20px 16px;
+        min-height: auto;
+    }
+
+    .sidebar-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    main {
+        padding: 24px 16px;
+        min-height: calc(100vh - 140px);
+    }
+
+    .tarjeta-inicio {
+        padding: 28px 20px;
+    }
+
+    .emotion-row {
+        gap: 6px;
+    }
+
+    .emo-card {
+        min-width: 56px;
+        padding: 10px 4px;
+    }
+
+    .emo-card .emoji {
+        font-size: 1.4rem;
+    }
+
+    .lista-cards {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 24px 16px;
+    }
+
+    .contenedor-chat {
+        height: calc(100vh - 160px);
+    }
+
+    .mensaje {
+        max-width: 85%;
+    }
+
+    .chat-topbar {
+        padding: 10px 14px;
+    }
+
+    .input-chat input {
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+
+    .input-chat .btn-principal {
+        padding: 12px 18px;
+    }
+}
+
+/* ── LOADING SPINNER ── */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #8a8aaa;
+}
+
+.loading::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 12px auto;
+    border: 3px solid #ede8f5;
+    border-top-color: #CDB4DB;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

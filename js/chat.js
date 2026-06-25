@@ -1,10 +1,14 @@
 import { supabase } from './supabase.js'
 
 const params = new URLSearchParams(window.location.search)
-const chatId = params.get('chat_id')
+const chatId = params.get('chat_id') || localStorage.getItem('chat_id_actual')
 const mensajesDiv = document.getElementById('mensajes')
 const inputMensaje = document.getElementById('texto-mensaje')
 const btnEnviar = document.getElementById('btn-enviar')
+
+if (!chatId) {
+    window.location.href = 'estudiante.html'
+}
 
 if (Notification.permission === 'default') {
     Notification.requestPermission()
@@ -20,18 +24,20 @@ function mostrarNotificacion(nombre, mensaje) {
 }
 
 async function cargarInfoChat() {
-    console.log('chatId:', chatId)
-    const { data: { user } } = await supabase.auth.getUser()
-    console.log('user:', user)
-    
-    const { data: chat, error } = await supabase
+    const { data: chat } = await supabase
         .from('chats')
         .select('*, estudiante:usuarios!chats_estudiante_id_fkey(nombre), psicoorientador:usuarios!chats_psicoorientador_id_fkey(nombre)')
         .eq('id', chatId)
         .single()
 
-    console.log('chat:', chat)
-    console.log('error:', error)
+    if (!chat) return
+
+    const { data: { user } } = await supabase.auth.getUser()
+    const nombreReceptor = user.id === chat.estudiante_id
+        ? chat.psicoorientador?.nombre
+        : chat.estudiante?.nombre
+
+    document.getElementById('nombre-receptor').textContent = nombreReceptor || 'Usuario'
 }
 
 async function cargarMensajes() {
@@ -41,7 +47,7 @@ async function cargarMensajes() {
         .eq('chat_id', chatId)
         .order('enviado_en', { ascending: true })
 
-    if (error) return
+    if (error || !data) return
 
     mensajesDiv.innerHTML = ''
     const { data: { user } } = await supabase.auth.getUser()
@@ -59,6 +65,10 @@ async function cargarMensajes() {
     })
 
     mensajesDiv.scrollTop = mensajesDiv.scrollHeight
+}
+
+if (!btnEnviar || !inputMensaje) {
+    throw new Error('Elementos del chat no encontrados')
 }
 
 btnEnviar.addEventListener('click', async () => {
@@ -91,6 +101,7 @@ inputMensaje.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') btnEnviar.click()
 })
 
+if (chatId) {
 supabase
     .channel('mensajes-' + chatId)
     .on('postgres_changes', {
@@ -112,6 +123,7 @@ supabase
         }
     })
     .subscribe()
+}
 
 const btnLogout = document.getElementById('btn-logout')
 if (btnLogout) {

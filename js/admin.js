@@ -34,9 +34,23 @@ async function cargarPsicoorientadores() {
     pendientes.innerHTML = ''
     aprobados.innerHTML = ''
 
-    if (!psicos || psicos.length === 0) {
+    if (!psicos?.length) {
         pendientes.innerHTML = '<p style="color:#8a8aaa;">No hay psicoorientadores pendientes.</p>'
         return
+    }
+
+    // Obtener extensiones reales de todos los archivos de una sola vez
+    const { data: archivos } = await supabase.storage
+        .from('titulos')
+        .list('', { limit: 100 })
+
+    const mapaExtension = {}
+    if (archivos) {
+        archivos.forEach(f => {
+            const [id] = f.name.split('.')
+            const ext = f.name.split('.').pop()
+            mapaExtension[id] = ext
+        })
     }
 
     for (const psico of psicos) {
@@ -44,17 +58,14 @@ async function cargarPsicoorientadores() {
         card.className = 'card-psico'
 
         // Obtener URL del título
-        const extensiones = ['pdf', 'jpg', 'jpeg', 'png']
+        const ext = mapaExtension[psico.usuario_id]
         let urlTitulo = null
 
-        for (const ext of extensiones) {
+        if (ext) {
             const { data } = await supabase.storage
                 .from('titulos')
                 .createSignedUrl(`${psico.usuario_id}.${ext}`, 3600)
-            if (data) {
-                urlTitulo = data.signedUrl
-                break
-            }
+            if (data) urlTitulo = data.signedUrl
         }
 
         const botonTitulo = urlTitulo
@@ -109,7 +120,7 @@ async function cargarEstudiantes() {
     const lista = document.getElementById('lista-estudiantes')
     lista.innerHTML = ''
 
-    if (!estudiantes || estudiantes.length === 0) {
+    if (!estudiantes?.length) {
         lista.innerHTML = '<p style="color:#8a8aaa;">No hay estudiantes registrados.</p>'
         return
     }
