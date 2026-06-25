@@ -37,7 +37,7 @@
 
             <div class="campo">
                 <label>Soy...</label>
-                <select id="rol" onchange="mostrarCampoTitulo()">
+                <select id="rol">
                     <option value="estudiante">Estudiante</option>
                     <option value="psicoorientador">Psicoorientador</option>
                 </select>
@@ -70,13 +70,6 @@
         <p>© 2025 Equilibrio Educativo — Todos los derechos reservados</p>
     </footer>
 
-    <script>
-        function mostrarCampoTitulo() {
-            const rol = document.getElementById('rol').value
-            document.getElementById('campo-titulo').style.display = rol === 'psicoorientador' ? 'block' : 'none'
-            document.getElementById('campo-especialidad').style.display = rol === 'psicoorientador' ? 'block' : 'none'
-        }
-    </script>
     <script type="module" src="js/auth.js"></script>
 </body>
 </html>

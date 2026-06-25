@@ -1,65 +1,58 @@
 import { supabase } from './supabase.js'
+import { obtenerUsuarioActual, configurarCierreSesion } from './utilidades.js'
 
 async function cargarChats() {
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-        window.location.href = 'login.html'
-        return
-    }
+  try {
+    const user = await obtenerUsuarioActual()
+    if (!user) return
 
     const { data: usuario } = await supabase
-        .from('usuarios')
-        .select('nombre')
-        .eq('id', user.id)
-        .single()
+      .from('usuarios')
+      .select('nombre')
+      .eq('id', user.id)
+      .single()
 
     document.getElementById('nombre-usuario').textContent = usuario.nombre
 
-    // Buscar el id del psicoorientador en la tabla psicoorientadores
     const { data: psico } = await supabase
-        .from('psicoorientadores')
-        .select('usuario_id')
-        .eq('usuario_id', user.id)
-        .single()
+      .from('psicoorientadores')
+      .select('usuario_id')
+      .eq('usuario_id', user.id)
+      .single()
 
     if (!psico) {
-        document.getElementById('lista-chats').innerHTML = '<p>No se encontró tu perfil de psicoorientador.</p>'
-        return
+      document.getElementById('lista-chats').innerHTML = '<p class="vacio">No se encontró tu perfil de psicoorientador.</p>'
+      return
     }
 
     const { data: chats } = await supabase
-        .from('chats')
-        .select('*, usuarios!chats_estudiante_id_fkey(nombre)')
-        .eq('psicoorientador_id', user.id)
+      .from('chats')
+      .select('*, usuarios!chats_estudiante_id_fkey(nombre)')
+      .eq('psicoorientador_id', user.id)
 
     const lista = document.getElementById('lista-chats')
 
     if (!chats?.length) {
-        lista.innerHTML = '<p style="color:#8a8aaa;">No tienes conversaciones activas aún.</p>'
-        return
+      lista.innerHTML = '<p class="vacio">No tienes conversaciones activas aún.</p>'
+      return
     }
 
     chats.forEach(chat => {
-        const card = document.createElement('div')
-        card.className = 'card-psico'
-        card.innerHTML = `
-            <h3>${chat.usuarios.nombre}</h3>
-            <p>Conversación activa</p>
-            <button class="btn-principal" onclick="localStorage.setItem('chat_id_actual', '${chat.id}'); window.location.href='chat.html'">
-                Abrir chat
-            </button>
-        `
-        lista.appendChild(card)
+      const card = document.createElement('div')
+      card.className = 'card-psico'
+      card.innerHTML = `
+        <h3>${chat.usuarios.nombre}</h3>
+        <p>Conversación activa</p>
+        <button class="btn-principal" onclick="localStorage.setItem('chat_id_actual', '${chat.id}'); window.location.href='chat.html'">
+          Abrir chat
+        </button>
+      `
+      lista.appendChild(card)
     })
+  } catch (err) {
+    console.error('Error al cargar chats:', err)
+  }
 }
 
+configurarCierreSesion()
 cargarChats()
-// Cerrar sesión
-const btnLogout = document.getElementById('btn-logout')
-if (btnLogout) {
-    btnLogout.addEventListener('click', async () => {
-        await supabase.auth.signOut()
-        window.location.href = 'index.html'
-    })
-}

@@ -1,169 +1,175 @@
 import { supabase } from './supabase.js'
+import { mostrarMensaje, configurarCierreSesion } from './utilidades.js'
 
-const esRegistro = document.getElementById('btn-registro')
-const esLogin = document.getElementById('btn-login')
+const mensaje = document.getElementById('mensaje')
+
+function alternarCamposPsico() {
+  const rol = document.getElementById('rol')
+  if (!rol) return
+  const visible = rol.value === 'psicoorientador'
+  const campos = ['campo-titulo', 'campo-especialidad']
+  campos.forEach(id => {
+    const el = document.getElementById(id)
+    if (el) el.style.display = visible ? 'block' : 'none'
+  })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const selectRol = document.getElementById('rol')
+  if (selectRol) {
+    selectRol.addEventListener('change', alternarCamposPsico)
+    alternarCamposPsico()
+  }
+})
 
 // REGISTRO
+const esRegistro = document.getElementById('btn-registro')
 if (esRegistro) {
-    document.getElementById('btn-registro').addEventListener('click', async () => {
-        const nombre = document.getElementById('nombre').value
-        const correo = document.getElementById('correo').value
-        const contrasena = document.getElementById('contrasena').value
-        const rol = document.getElementById('rol').value
-        const mensaje = document.getElementById('mensaje')
+  esRegistro.addEventListener('click', async () => {
+    const nombre = document.getElementById('nombre').value.trim()
+    const correo = document.getElementById('correo').value.trim()
+    const contrasena = document.getElementById('contrasena').value
+    const rol = document.getElementById('rol').value
 
-        if (!correo.endsWith('.edu.co')) {
-            mensaje.textContent = 'Debes usar tu correo institucional del colegio.'
-            return
+    if (!nombre || !correo || !contrasena) {
+      mostrarMensaje(mensaje, 'Por favor completa todos los campos.', 'error')
+      return
+    }
+
+    if (!correo.endsWith('.edu.co')) {
+      mostrarMensaje(mensaje, 'Debes usar tu correo institucional del colegio.', 'error')
+      return
+    }
+
+    if (contrasena.length < 6) {
+      mostrarMensaje(mensaje, 'La contraseña debe tener al menos 6 caracteres.', 'error')
+      return
+    }
+
+    if (rol === 'psicoorientador') {
+      const titulo = document.getElementById('titulo').files[0]
+      if (!titulo) {
+        mostrarMensaje(mensaje, 'Debes subir tu título profesional.', 'error')
+        return
+      }
+    }
+
+    mostrarMensaje(mensaje, 'Creando cuenta...', 'info')
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: correo,
+        password: contrasena
+      })
+
+      if (error) {
+        mostrarMensaje(mensaje, 'Error: ' + error.message, 'error')
+        return
+      }
+
+      const { error: errorDB } = await supabase.from('usuarios').insert({
+        id: data.user.id,
+        nombre,
+        correo,
+        rol
+      })
+
+      if (errorDB) {
+        mostrarMensaje(mensaje, 'Error al guardar usuario: ' + errorDB.message, 'error')
+        return
+      }
+
+      if (rol === 'psicoorientador') {
+        const especialidad = document.getElementById('especialidad').value
+        const titulo = document.getElementById('titulo').files[0]
+
+        const extension = titulo.name.split('.').pop()
+        const nombreArchivo = `${data.user.id}.${extension}`
+
+        const { error: errorStorage } = await supabase.storage
+          .from('titulos')
+          .upload(nombreArchivo, titulo)
+
+        if (errorStorage) {
+          mostrarMensaje(mensaje, 'Error al subir título: ' + errorStorage.message, 'error')
+          return
         }
 
-        if (!nombre || !correo || !contrasena) {
-            mensaje.textContent = 'Por favor completa todos los campos.'
-            return
-        }
-
-        if (contrasena.length < 6) {
-            mensaje.textContent = 'La contraseña debe tener al menos 6 caracteres.'
-            return
-        }
-
-        // Si es psicoorientador verificar que subió título
-        if (rol === 'psicoorientador') {
-            const titulo = document.getElementById('titulo').files[0]
-            if (!titulo) {
-                mensaje.textContent = 'Debes subir tu título profesional.'
-                return
-            }
-        }
-
-        mensaje.style.color = 'gray'
-        mensaje.textContent = 'Creando cuenta...'
-
-        const { data, error } = await supabase.auth.signUp({
-            email: correo,
-            password: contrasena
+        await supabase.from('psicoorientadores').insert({
+          usuario_id: data.user.id,
+          especialidad,
+          descripcion: '',
+          disponible: false,
+          estado: 'pendiente'
         })
 
-        if (error) {
-            mensaje.style.color = 'red'
-            mensaje.textContent = 'Error: ' + error.message
-            return
-        }
-
-        const { error: errorDB } = await supabase.from('usuarios').insert({
-            id: data.user.id,
-            nombre: nombre,
-            correo: correo,
-            rol: rol
-        })
-
-        if (errorDB) {
-            mensaje.style.color = 'red'
-            mensaje.textContent = 'Error al guardar usuario: ' + errorDB.message
-            return
-        }
-
-        if (rol === 'psicoorientador') {
-            const especialidad = document.getElementById('especialidad').value
-            const titulo = document.getElementById('titulo').files[0]
-
-            // Subir título al storage
-            const extension = titulo.name.split('.').pop()
-            const nombreArchivo = `${data.user.id}.${extension}`
-
-            const { error: errorStorage } = await supabase.storage
-                .from('titulos')
-                .upload(nombreArchivo, titulo)
-
-            if (errorStorage) {
-                mensaje.style.color = 'red'
-                mensaje.textContent = 'Error al subir título: ' + errorStorage.message
-                return
-            }
-
-            await supabase.from('psicoorientadores').insert({
-                usuario_id: data.user.id,
-                especialidad: especialidad,
-                descripcion: '',
-                disponible: false,
-                estado: 'pendiente'
-            })
-
-            mensaje.style.color = 'green'
-            mensaje.textContent = '¡Cuenta creada! Tu título será revisado por el administrador.'
-        } else {
-            mensaje.style.color = 'green'
-            mensaje.textContent = '¡Cuenta creada! Ya puedes iniciar sesión.'
-            setTimeout(() => {
-                window.location.href = 'login.html'
-            }, 2000)
-        }
-    })
+        mostrarMensaje(mensaje, '¡Cuenta creada! Tu título será revisado por el administrador.', 'exito')
+      } else {
+        mostrarMensaje(mensaje, '¡Cuenta creada! Ya puedes iniciar sesión.', 'exito')
+        setTimeout(() => { window.location.href = 'login.html' }, 2000)
+      }
+    } catch (err) {
+      mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
+    }
+  })
 }
 
 // LOGIN
+const esLogin = document.getElementById('btn-login')
 if (esLogin) {
-    document.getElementById('btn-login').addEventListener('click', async () => {
-        const correo = document.getElementById('correo').value
-        const contrasena = document.getElementById('contrasena').value
-        const mensaje = document.getElementById('mensaje')
+  esLogin.addEventListener('click', async () => {
+    const correo = document.getElementById('correo').value.trim()
+    const contrasena = document.getElementById('contrasena').value
 
-        if (!correo || !contrasena) {
-            mensaje.textContent = 'Por favor completa todos los campos.'
-            return
+    if (!correo || !contrasena) {
+      mostrarMensaje(mensaje, 'Por favor completa todos los campos.', 'error')
+      return
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: correo,
+        password: contrasena
+      })
+
+      if (error) {
+        mostrarMensaje(mensaje, 'Error: ' + error.message, 'error')
+        return
+      }
+
+      const { data: usuario } = await supabase
+        .from('usuarios')
+        .select('rol')
+        .eq('id', data.user.id)
+        .single()
+
+      if (usuario.rol === 'estudiante') {
+        window.location.href = 'estudiante.html'
+      } else if (usuario.rol === 'psicoorientador') {
+        const { data: psico } = await supabase
+          .from('psicoorientadores')
+          .select('estado')
+          .eq('usuario_id', data.user.id)
+          .single()
+
+        if (psico.estado === 'pendiente') {
+          await supabase.auth.signOut()
+          mostrarMensaje(mensaje, 'Tu cuenta está pendiente de aprobación por el administrador.', 'error')
+          return
+        } else if (psico.estado === 'rechazado') {
+          await supabase.auth.signOut()
+          mostrarMensaje(mensaje, 'Tu cuenta fue rechazada. Contacta al administrador.', 'error')
+          return
         }
 
-       const { data, error } = await supabase.auth.signInWithPassword({
-    email: correo,
-    password: contrasena
-})
-
-console.log('sesion:', data.session)
-console.log('token:', data.session?.access_token)
-
-        if (error) {
-            mensaje.textContent = 'Error: ' + error.message
-            return
-        }
-
-        const { data: usuario } = await supabase
-            .from('usuarios')
-            .select('rol')
-            .eq('id', data.user.id)
-            .single()
-
-        if (usuario.rol === 'estudiante') {
-            window.location.href = 'estudiante.html'
-        } else if (usuario.rol === 'psicoorientador') {
-            // Verificar si está aprobado
-            const { data: psico } = await supabase
-                .from('psicoorientadores')
-                .select('estado')
-                .eq('usuario_id', data.user.id)
-                .single()
-
-            if (psico.estado === 'pendiente') {
-                await supabase.auth.signOut()
-                mensaje.textContent = 'Tu cuenta está pendiente de aprobación por el administrador.'
-                return
-            } else if (psico.estado === 'rechazado') {
-                await supabase.auth.signOut()
-                mensaje.textContent = 'Tu cuenta fue rechazada. Contacta al administrador.'
-                return
-            }
-
-            window.location.href = 'psicoorientador.html'
-        } else if (usuario.rol === 'admin') {
-            window.location.href = 'admin.html'
-        }
-    })
+        window.location.href = 'psicoorientador.html'
+      } else if (usuario.rol === 'admin') {
+        window.location.href = 'admin.html'
+      }
+    } catch (err) {
+      mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
+    }
+  })
 }
 
-// Cerrar sesión
-const btnLogout = document.getElementById('btn-logout')
-if (btnLogout) {
-    btnLogout.addEventListener('click', async () => {
-        await supabase.auth.signOut()
-        window.location.href = 'index.html'
-    })
-}
+configurarCierreSesion()
