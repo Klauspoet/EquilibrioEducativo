@@ -1,7 +1,8 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
 
 async function cargarChats() {
+  showLoader()
   try {
     const user = await obtenerUsuarioActual()
     if (!user) return
@@ -51,6 +52,8 @@ async function cargarChats() {
     })
   } catch (err) {
     console.error('Error al cargar chats:', err)
+  } finally {
+    hideLoader()
   }
 }
 

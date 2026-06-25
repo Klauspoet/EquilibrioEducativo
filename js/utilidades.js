@@ -34,3 +34,22 @@ export function mostrarMensaje(elemento, texto, tipo) {
     : tipo === 'exito' ? '#27ae60'
     : '#8a8aaa'
 }
+
+export function showLoader() {
+  const loader = document.getElementById('loader-overlay')
+  if (loader) {
+    loader.style.display = 'flex'
+    loader.offsetHeight
+    loader.classList.add('active')
+  }
+}
+
+export function hideLoader() {
+  const loader = document.getElementById('loader-overlay')
+  if (loader) {
+    loader.classList.remove('active')
+    setTimeout(() => {
+      loader.style.display = 'none'
+    }, 250)
+  }
+}

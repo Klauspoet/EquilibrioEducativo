@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
 
 const params = new URLSearchParams(window.location.search)
 const chatId = params.get('chat_id') || localStorage.getItem('chat_id_actual')
@@ -164,6 +164,8 @@ window.addEventListener('beforeunload', () => {
 })
 
 configurarCierreSesion()
+showLoader()
 await cargarInfoChat()
 await cargarMensajes()
+hideLoader()
 iniciarSuscripcion()

@@ -6,6 +6,9 @@
     <title>Login — Equilibrio Educativo</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <meta name="description" content="Inicia sesión en Equilibrio Educativo — tu espacio seguro de bienestar emocional.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -33,7 +36,7 @@
             </button>
 
             <p style="margin-top:16px; color:#555;">
-                ¿No tienes cuenta? <a href="registro.html" style="color:#2d6a4f;">Regístrate</a>
+                ¿No tienes cuenta? <a href="registro.html" style="color:#3B82F6;">Regístrate</a>
             </p>
 
             <p id="mensaje" style="margin-top:12px; color:red;"></p>
@@ -44,6 +47,13 @@
         <p>© 2025 Equilibrio Educativo — Todos los derechos reservados</p>
     </footer>
 
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
     <script type="module" src="js/auth.js"></script>
 </body>
 </html>

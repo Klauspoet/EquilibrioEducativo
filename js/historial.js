@@ -1,15 +1,16 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
 
 const emojis = {
   'Triste': '😔', 'Regular': '😐', 'Bien': '🙂', 'Genial': '😄', 'Ansioso': '😰'
 }
 
 const colores = {
-  'Triste': '#A7C7E7', 'Regular': '#CDB4DB', 'Bien': '#B7E4C7', 'Genial': '#FFD6A5', 'Ansioso': '#FFC8C8'
+  'Triste': '#3B82F6', 'Regular': '#0EA5E9', 'Bien': '#10B981', 'Genial': '#F59E0B', 'Ansioso': '#EF4444'
 }
 
 async function cargarHistorial() {
+  showLoader()
   try {
     const user = await obtenerUsuarioActual()
     if (!user) return
@@ -71,6 +72,8 @@ async function cargarHistorial() {
     })
   } catch (err) {
     console.error('Error al cargar historial:', err)
+  } finally {
+    hideLoader()
   }
 }
 

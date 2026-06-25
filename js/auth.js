@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { mostrarMensaje, configurarCierreSesion } from './utilidades.js'
+import { mostrarMensaje, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
 
 const mensaje = document.getElementById('mensaje')
 
@@ -55,6 +55,7 @@ if (esRegistro) {
     }
 
     mostrarMensaje(mensaje, 'Creando cuenta...', 'info')
+    showLoader()
 
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -110,6 +111,8 @@ if (esRegistro) {
       }
     } catch (err) {
       mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
+    } finally {
+      hideLoader()
     }
   })
 }
@@ -126,6 +129,7 @@ if (esLogin) {
       return
     }
 
+    showLoader()
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: correo,
@@ -168,6 +172,8 @@ if (esLogin) {
       }
     } catch (err) {
       mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
+    } finally {
+      hideLoader()
     }
   })
 }

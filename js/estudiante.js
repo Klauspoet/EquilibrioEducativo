@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
 
 const mensajesEmocionales = {
   'Triste': { texto: '💙 Está bien no estar bien. Hablar con alguien puede ayudarte mucho.', urgente: true },
@@ -12,6 +12,7 @@ const mensajesEmocionales = {
 let usuarioActual = null
 
 async function cargarPsicoorientadores() {
+  showLoader()
   try {
     usuarioActual = await obtenerUsuarioActual()
     if (!usuarioActual) return
@@ -46,6 +47,8 @@ async function cargarPsicoorientadores() {
     })
   } catch (err) {
     console.error('Error al cargar psicoorientadores:', err)
+  } finally {
+    hideLoader()
   }
 }
 
