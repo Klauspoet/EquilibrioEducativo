@@ -54,6 +54,9 @@ if (esRegistro) {
       }
     }
 
+    const btn = document.getElementById('btn-registro')
+    btn.disabled = true
+
     mostrarMensaje(mensaje, 'Creando cuenta...', 'info')
     showLoader()
 
@@ -64,20 +67,40 @@ if (esRegistro) {
       })
 
       if (error) {
-        mostrarMensaje(mensaje, 'Error: ' + error.message, 'error')
+        btn.disabled = false
+        if (error.message?.toLowerCase().includes('already registered')) {
+          mostrarMensaje(mensaje, 'Este correo ya está registrado. Por favor inicia sesión.', 'error')
+          setTimeout(() => { window.location.href = 'login.html' }, 2000)
+        } else {
+          mostrarMensaje(mensaje, 'Error: ' + error.message, 'error')
+        }
         return
       }
 
-      const { error: errorDB } = await supabase.from('usuarios').insert({
-        id: data.user.id,
-        nombre,
-        correo,
-        rol
-      })
+      const { data: existing } = await supabase
+        .from('usuarios')
+        .select('id')
+        .eq('correo', correo)
+        .maybeSingle()
 
-      if (errorDB) {
-        mostrarMensaje(mensaje, 'Error al guardar usuario: ' + errorDB.message, 'error')
-        return
+      const usuarioId = existing?.id || data.user.id
+
+      if (!existing) {
+        const { error: errorDB } = await supabase.from('usuarios').upsert(
+          {
+            id: data.user.id,
+            nombre,
+            correo,
+            rol
+          },
+          { onConflict: 'correo' }
+        )
+
+        if (errorDB) {
+          btn.disabled = false
+          mostrarMensaje(mensaje, 'Error al guardar usuario: ' + errorDB.message, 'error')
+          return
+        }
       }
 
       if (rol === 'psicoorientador') {
@@ -85,19 +108,20 @@ if (esRegistro) {
         const titulo = document.getElementById('titulo').files[0]
 
         const extension = titulo.name.split('.').pop()
-        const nombreArchivo = `${data.user.id}.${extension}`
+        const nombreArchivo = `${usuarioId}.${extension}`
 
         const { error: errorStorage } = await supabase.storage
           .from('titulos')
           .upload(nombreArchivo, titulo)
 
         if (errorStorage) {
+          btn.disabled = false
           mostrarMensaje(mensaje, 'Error al subir título: ' + errorStorage.message, 'error')
           return
         }
 
         await supabase.from('psicoorientadores').insert({
-          usuario_id: data.user.id,
+          usuario_id: usuarioId,
           especialidad,
           descripcion: '',
           disponible: false,
@@ -111,6 +135,7 @@ if (esRegistro) {
       })
 
       if (loginError) {
+        btn.disabled = false
         mostrarMensaje(mensaje, 'Error al iniciar sesión: ' + loginError.message, 'error')
         return
       }
@@ -118,7 +143,7 @@ if (esRegistro) {
       const { data: usuario } = await supabase
         .from('usuarios')
         .select('rol')
-        .eq('id', data.user.id)
+        .eq('id', usuarioId)
         .single()
 
       if (usuario.rol === 'estudiante') {
@@ -127,11 +152,12 @@ if (esRegistro) {
         const { data: psico } = await supabase
           .from('psicoorientadores')
           .select('estado')
-          .eq('usuario_id', data.user.id)
+          .eq('usuario_id', usuarioId)
           .single()
 
         if (psico.estado === 'pendiente') {
           await supabase.auth.signOut()
+          btn.disabled = false
           mostrarMensaje(mensaje, '¡Cuenta creada! Tu título será revisado por el administrador.', 'exito')
           setTimeout(() => { window.location.href = 'login.html' }, 2000)
         } else {
@@ -139,6 +165,7 @@ if (esRegistro) {
         }
       }
     } catch (err) {
+      btn.disabled = false
       mostrarMensaje(mensaje, 'Error inesperado: ' + err.message, 'error')
     } finally {
       hideLoader()
