@@ -851,3 +851,50 @@ body.dark .hex-inner {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* ── TOP NAVBAR ── */
+.top-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: #fff;
+    border-bottom: 1px solid #E5E7EB;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+.nav-logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+.nav-brand {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1F2937;
+}
+
+body.dark .top-nav {
+    background: #1e293b;
+    border-bottom-color: #334155;
+}
+body.dark .nav-brand {
+    color: #f1f5f9;
+}
+
+@media (max-width: 768px) {
+    .top-nav {
+        padding: 12px 16px;
+    }
+    .nav-brand {
+        font-size: 0.9rem;
+    }
+    .nav-logo {
+        width: 32px;
+        height: 32px;
+    }
+}
