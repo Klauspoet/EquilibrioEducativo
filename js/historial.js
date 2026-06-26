@@ -33,6 +33,9 @@ async function cargarHistorial() {
       if (conteo[r.emocion] !== undefined) conteo[r.emocion]++
     })
 
+    const skelChart = document.getElementById('skeleton-chart')
+    if (skelChart) skelChart.style.display = 'none'
+
     const ctx = document.getElementById('graficaEmociones').getContext('2d')
     new Chart(ctx, {
       type: 'bar',

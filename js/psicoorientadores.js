@@ -32,6 +32,7 @@ async function cargarChats() {
       .eq('psicoorientador_id', user.id)
 
     const lista = document.getElementById('lista-chats')
+    lista.innerHTML = ''
 
     if (!chats?.length) {
       lista.innerHTML = '<p class="vacio">No tienes conversaciones activas aún.</p>'

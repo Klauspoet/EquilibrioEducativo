@@ -34,7 +34,7 @@
         <main class="page-content">
             <div class="contenedor-chat">
 
-                <div class="chat-topbar">
+                <div class="chat-topbar animate-on-scroll">
                     <div class="chat-avatar" id="avatar-receptor">👤</div>
                     <div>
                         <h4 id="nombre-receptor">Cargando...</h4>
@@ -42,7 +42,12 @@
                     </div>
                 </div>
 
-                <div id="mensajes" class="mensajes"></div>
+                <div id="mensajes" class="mensajes animate-on-scroll">
+                    <div class="skeleton" style="height: 40px; width: 60%; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 40px; width: 45%; margin-bottom: 8px; align-self: flex-end;"></div>
+                    <div class="skeleton" style="height: 40px; width: 55%; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 40px; width: 35%; margin-bottom: 8px; align-self: flex-end;"></div>
+                </div>
 
                 <div class="input-chat">
                     <input
@@ -67,5 +72,6 @@
     </div>
     <script type="module" src="js/chat.js"></script>
 <script type="module" src="js/tema.js"></script>
+    <script src="js/animations.js"></script>
 </body>
 </html>

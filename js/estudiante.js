@@ -31,6 +31,7 @@ async function cargarPsicoorientadores() {
       .eq('disponible', true)
 
     const lista = document.getElementById('lista-psicoorientadores')
+    lista.innerHTML = ''
 
     ;(psicos ?? []).forEach(psico => {
       const card = document.createElement('div')

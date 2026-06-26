@@ -37,12 +37,17 @@
                 <h2>Tu historial emocional 📊</h2>
                 <p>Aquí puedes ver cómo te has sentido con el tiempo.</p>
 
-                <div class="tarjeta-grafica">
+                <div class="tarjeta-grafica animate-on-scroll">
+                    <div class="skeleton" id="skeleton-chart" style="height: 200px; width: 100%;"></div>
                     <canvas id="graficaEmociones" height="100"></canvas>
                 </div>
 
                 <h2 style="margin-bottom: 16px;">Registros recientes</h2>
-                <div id="lista-registros" class="lista-cards"></div>
+                <div id="lista-registros" class="lista-cards">
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
+                    <div class="skeleton skeleton-card"></div>
+                </div>
             </div>
         </main>
 
@@ -57,5 +62,6 @@
     </div>
     <script type="module" src="js/historial.js"></script>
 <script type="module" src="js/tema.js"></script>
+    <script src="js/animations.js"></script>
 </body>
 </html>
