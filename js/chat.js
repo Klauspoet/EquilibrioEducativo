@@ -29,13 +29,13 @@ function mostrarNotificacion(nombre, mensaje) {
 
 async function cargarInfoChat() {
   try {
-    const { data: chat } = await supabase
+    const { data: chat, error: errorChat } = await supabase
       .from('chats')
       .select('*, estudiante:usuarios!chats_estudiante_id_fkey(nombre), psicoorientador:usuarios!chats_psicoorientador_id_fkey(nombre)')
       .eq('id', chatId)
-      .single()
+      .maybeSingle()
 
-    if (!chat) return
+    if (errorChat || !chat) return
 
     usuarioActual = await obtenerUsuarioActual()
     if (!usuarioActual) return
@@ -96,38 +96,42 @@ function agregarMensajeDOM(texto, nombre) {
   mensajesDiv.scrollTop = mensajesDiv.scrollHeight
 }
 
-btnEnviar.addEventListener('click', async () => {
-  const texto = inputMensaje.value.trim()
-  if (!texto) return
+if (btnEnviar && inputMensaje) {
+  btnEnviar.addEventListener('click', async () => {
+    const texto = inputMensaje.value.trim()
+    if (!texto) return
 
-  try {
-    if (!usuarioActual) {
-      usuarioActual = await obtenerUsuarioActual()
-      if (!usuarioActual) return
+    try {
+      if (!usuarioActual) {
+        usuarioActual = await obtenerUsuarioActual()
+        if (!usuarioActual) return
+      }
+
+      const { data: usuarioData, error: errorUsuario } = await supabase
+        .from('usuarios')
+        .select('nombre')
+        .eq('id', usuarioActual.id)
+        .maybeSingle()
+
+      if (errorUsuario || !usuarioData) return
+
+      agregarMensajeDOM(texto, usuarioData.nombre)
+      inputMensaje.value = ''
+
+      await supabase.from('mensajes').insert({
+        chat_id: chatId,
+        enviado_por: usuarioActual.id,
+        texto
+      })
+    } catch (err) {
+      console.error('Error al enviar mensaje:', err)
     }
+  })
 
-    const { data: usuarioData } = await supabase
-      .from('usuarios')
-      .select('nombre')
-      .eq('id', usuarioActual.id)
-      .single()
-
-    agregarMensajeDOM(texto, usuarioData.nombre)
-    inputMensaje.value = ''
-
-    await supabase.from('mensajes').insert({
-      chat_id: chatId,
-      enviado_por: usuarioActual.id,
-      texto
-    })
-  } catch (err) {
-    console.error('Error al enviar mensaje:', err)
-  }
-})
-
-inputMensaje.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') btnEnviar.click()
-})
+  inputMensaje.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') btnEnviar.click()
+  })
+}
 
 async function iniciarSuscripcion() {
   suscripcion = supabase
@@ -163,9 +167,16 @@ window.addEventListener('beforeunload', () => {
   }
 })
 
-configurarCierreSesion()
-showLoader()
-await cargarInfoChat()
-await cargarMensajes()
-hideLoader()
-iniciarSuscripcion()
+if (chatId) {
+  configurarCierreSesion()
+  showLoader()
+  try {
+    await cargarInfoChat()
+    await cargarMensajes()
+  } catch (err) {
+    console.error('Error al iniciar chat:', err)
+  } finally {
+    hideLoader()
+  }
+  iniciarSuscripcion()
+}

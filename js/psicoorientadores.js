@@ -7,19 +7,22 @@ async function cargarChats() {
     const user = await obtenerUsuarioActual()
     if (!user) return
 
-    const { data: usuario } = await supabase
+    const { data: usuario, error: errorUsuario } = await supabase
       .from('usuarios')
       .select('nombre')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
+    if (errorUsuario || !usuario) return
     document.getElementById('nombre-usuario').textContent = usuario.nombre
 
-    const { data: psico } = await supabase
+    const { data: psico, error: errorPsico } = await supabase
       .from('psicoorientadores')
       .select('usuario_id')
       .eq('usuario_id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (errorPsico) return
 
     if (!psico) {
       document.getElementById('lista-chats').innerHTML = '<p class="vacio">No se encontró tu perfil de psicoorientador.</p>'

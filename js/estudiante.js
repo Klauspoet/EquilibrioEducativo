@@ -17,12 +17,13 @@ async function cargarPsicoorientadores() {
     usuarioActual = await obtenerUsuarioActual()
     if (!usuarioActual) return
 
-    const { data: usuario } = await supabase
+    const { data: usuario, error: errorUsuario } = await supabase
       .from('usuarios')
       .select('nombre')
       .eq('id', usuarioActual.id)
-      .single()
+      .maybeSingle()
 
+    if (errorUsuario || !usuario) return
     document.getElementById('nombre-usuario').textContent = usuario.nombre
 
     const { data: psicos } = await supabase
@@ -73,15 +74,16 @@ window.iniciarChat = async (psicoorientadorId) => {
       return
     }
 
-    const { data: nuevoChat } = await supabase
+    const { data: nuevoChat, error: errorChat } = await supabase
       .from('chats')
       .insert({
         estudiante_id: usuarioActual.id,
         psicoorientador_id: psicoorientadorId
       })
       .select()
-      .single()
+      .maybeSingle()
 
+    if (errorChat || !nuevoChat) return
     localStorage.setItem('chat_id_actual', nuevoChat.id)
     window.location.href = 'chat.html'
   } catch (err) {

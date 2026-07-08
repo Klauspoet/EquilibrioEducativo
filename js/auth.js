@@ -69,7 +69,10 @@ if (esRegistro) {
     try {
       const { data, error } = await supabase.auth.signUp({
         email: correo,
-        password: contrasena
+        password: contrasena,
+        options: {
+          data: { nombre, rol }
+        }
       })
 
       if (error) {
@@ -83,30 +86,26 @@ if (esRegistro) {
         return
       }
 
-      const { data: existing } = await supabase
-        .from('usuarios')
-        .select('id')
-        .eq('correo', correo)
-        .maybeSingle()
+      if (!data.user) {
+        mostrarMensaje(mensaje, 'Revisa tu correo para confirmar la cuenta antes de iniciar sesión.', 'exito')
+        setTimeout(() => { window.location.href = 'login.html' }, 2000)
+        return
+      }
 
-      const usuarioId = existing?.id || data.user.id
+      const usuarioId = data.user.id
 
-      if (!existing) {
-        const { error: errorDB } = await supabase.from('usuarios').upsert(
-          {
-            id: data.user.id,
-            nombre,
-            correo,
-            rol
-          },
-          { onConflict: 'correo' }
-        )
+      const { error: errorDB } = await supabase.from('usuarios').upsert(
+        {
+          id: usuarioId,
+          nombre,
+          correo,
+          rol
+        },
+        { onConflict: 'id' }
+      )
 
-        if (errorDB) {
-          btn.disabled = false
-          mostrarMensaje(mensaje, 'Error al guardar usuario: ' + errorDB.message, 'error')
-          return
-        }
+      if (errorDB) {
+        console.error('Error al guardar perfil:', errorDB)
       }
 
       if (rol === 'psicoorientador') {
@@ -135,31 +134,32 @@ if (esRegistro) {
         })
       }
 
-      const { error: loginError } = await supabase.auth.signInWithPassword({
-        email: correo,
-        password: contrasena
-      })
-
-      if (loginError) {
-        btn.disabled = false
-        mostrarMensaje(mensaje, 'Error al iniciar sesión: ' + loginError.message, 'error')
-        return
-      }
-
-      const { data: usuario } = await supabase
+      const { data: usuario, error: errorUsuario } = await supabase
         .from('usuarios')
         .select('rol')
         .eq('id', usuarioId)
-        .single()
+        .maybeSingle()
+
+      if (errorUsuario || !usuario) {
+        mostrarMensaje(mensaje, 'Cuenta creada. Ahora puedes iniciar sesión.', 'exito')
+        setTimeout(() => { window.location.href = 'login.html' }, 2000)
+        return
+      }
 
       if (usuario.rol === 'estudiante') {
         window.location.href = 'estudiante.html'
       } else if (usuario.rol === 'psicoorientador') {
-        const { data: psico } = await supabase
+        const { data: psico, error: errorPsico } = await supabase
           .from('psicoorientadores')
           .select('estado')
           .eq('usuario_id', usuarioId)
-          .single()
+          .maybeSingle()
+
+        if (errorPsico || !psico) {
+          mostrarMensaje(mensaje, 'Cuenta creada. Ahora puedes iniciar sesión.', 'exito')
+          setTimeout(() => { window.location.href = 'login.html' }, 2000)
+          return
+        }
 
         if (psico.estado === 'pendiente') {
           await supabase.auth.signOut()
@@ -203,20 +203,32 @@ if (esLogin) {
         return
       }
 
-      const { data: usuario } = await supabase
+      const { data: usuario, error: errorUsuario } = await supabase
         .from('usuarios')
         .select('rol')
         .eq('id', data.user.id)
-        .single()
+        .maybeSingle()
+
+      if (errorUsuario || !usuario) {
+        await supabase.auth.signOut()
+        mostrarMensaje(mensaje, 'No se encontró tu perfil de usuario. Contacta al administrador.', 'error')
+        return
+      }
 
       if (usuario.rol === 'estudiante') {
         window.location.href = 'estudiante.html'
       } else if (usuario.rol === 'psicoorientador') {
-        const { data: psico } = await supabase
+        const { data: psico, error: errorPsico } = await supabase
           .from('psicoorientadores')
           .select('estado')
           .eq('usuario_id', data.user.id)
-          .single()
+          .maybeSingle()
+
+        if (errorPsico || !psico) {
+          await supabase.auth.signOut()
+          mostrarMensaje(mensaje, 'No se encontró tu perfil de psicoorientador. Contacta al administrador.', 'error')
+          return
+        }
 
         if (psico.estado === 'pendiente') {
           await supabase.auth.signOut()
