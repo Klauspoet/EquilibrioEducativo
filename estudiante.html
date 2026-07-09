@@ -13,6 +13,8 @@
 </head>
 <body>
 
+    <div class="gradient-accent-bar"></div>
+
     <nav class="top-nav">
         <a href="/index.html">
             <img src="/img/logo.png" alt="Equilibrio Educativo" class="nav-logo">
@@ -24,26 +26,28 @@
 
         <nav class="sidebar">
            <img src="/img/logo.png" class="sidebar-logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 12px; padding: 4px;" alt="Logo">
-            <a href="chat.html" class="sidebar-icon" title="Chat" aria-label="Chat">💬</a>
-           <a href="historial.html" class="sidebar-icon" title="Historial" aria-label="Historial">📊</a>
-             <a href="#" class="sidebar-icon" title="Cambiar tema" id="btn-tema" aria-label="Cambiar tema">🌙</a>
-<a href="#" class="sidebar-icon bottom" title="Cerrar sesión" id="btn-logout" aria-label="Cerrar sesión">🚪</a>
+            <a href="chat.html" class="sidebar-icon" title="Chat" aria-label="Chat" data-tooltip="Chat">💬</a>
+           <a href="historial.html" class="sidebar-icon" title="Historial" aria-label="Historial" data-tooltip="Historial">📊</a>
+             <a href="#" class="sidebar-icon" title="Cambiar tema" id="btn-tema" aria-label="Cambiar tema" data-tooltip="Tema">🌙</a>
+<a href="#" class="sidebar-icon bottom" title="Cerrar sesión" id="btn-logout" aria-label="Cerrar sesión" data-tooltip="Salir">🚪</a>
         </nav>
 
         <main class="page-content">
             <div class="contenedor">
-                <h2>Hola, <span id="nombre-usuario"></span> 👋</h2>
-                <p>¿Cómo te sientes hoy? Elige un psicoorientador para iniciar una conversación privada.</p>
-
-                <div class="emotion-row animate-on-scroll">
-                    <div class="emo-card"><span class="emoji">😔</span><span>Triste</span></div>
-                    <div class="emo-card"><span class="emoji">😐</span><span>Regular</span></div>
-                    <div class="emo-card"><span class="emoji">🙂</span><span>Bien</span></div>
-                    <div class="emo-card"><span class="emoji">😄</span><span>Genial</span></div>
-                    <div class="emo-card"><span class="emoji">😰</span><span>Ansioso</span></div>
+                <div class="greeting-glow-card">
+                    <h2 class="greeting-title">Hola, <span id="nombre-usuario" class="gradient-name"></span> <span class="wave-emoji">👋</span></h2>
+                    <p>¿Cómo te sientes hoy? Elige un psicoorientador para iniciar una conversación privada.</p>
                 </div>
 
-                <h2 style="margin-bottom: 16px;">Psicoorientadores disponibles</h2>
+                <div class="emotion-row animate-on-scroll">
+                    <div class="emo-card" data-emotion="triste"><span class="emoji">😔</span><span>Triste</span></div>
+                    <div class="emo-card" data-emotion="regular"><span class="emoji">😐</span><span>Regular</span></div>
+                    <div class="emo-card" data-emotion="bien"><span class="emoji">🙂</span><span>Bien</span></div>
+                    <div class="emo-card" data-emotion="genial"><span class="emoji">😄</span><span>Genial</span></div>
+                    <div class="emo-card" data-emotion="ansioso"><span class="emoji">😰</span><span>Ansioso</span></div>
+                </div>
+
+                <h2 class="section-title-accent">Psicoorientadores disponibles</h2>
                 <div id="lista-psicoorientadores" class="lista-cards">
                     <div class="skeleton skeleton-card"></div>
                     <div class="skeleton skeleton-card"></div>

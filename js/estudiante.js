@@ -37,9 +37,16 @@ async function cargarPsicoorientadores() {
     ;(psicos ?? []).forEach(psico => {
       const card = document.createElement('div')
       card.className = 'card-psico'
+      const nombre = psico.usuarios.nombre
+      const iniciales = nombre.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
       card.innerHTML = `
-        <h3>${psico.usuarios.nombre}</h3>
-        <p>${psico.especialidad || 'Psicoorientador'}</p>
+        <div class="card-header-row">
+          <div class="card-avatar">${iniciales}</div>
+          <div>
+            <h3>${nombre}</h3>
+            <span class="specialty-tag">${psico.especialidad || 'Psicoorientador'}</span>
+          </div>
+        </div>
         <p>${psico.descripcion || ''}</p>
         <button class="btn-principal" onclick="window.iniciarChat('${psico.usuario_id}')">
           Iniciar chat
