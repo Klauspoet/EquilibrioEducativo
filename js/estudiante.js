@@ -9,6 +9,22 @@ const mensajesEmocionales = {
   'Ansioso': { texto: '💜 Entendemos cómo te sientes. Un psicoorientador puede ayudarte ahora.', urgente: true }
 }
 
+const emocionDesdeDataAttr = {
+  triste: 'Triste',
+  regular: 'Regular',
+  bien: 'Bien',
+  genial: 'Genial',
+  ansioso: 'Ansioso'
+}
+
+const dataAttrDesdeEmocion = {
+  Triste: 'triste',
+  Regular: 'regular',
+  Bien: 'bien',
+  Genial: 'genial',
+  Ansioso: 'ansioso'
+}
+
 let usuarioActual = null
 
 async function cargarPsicoorientadores() {
@@ -25,6 +41,8 @@ async function cargarPsicoorientadores() {
 
     if (errorUsuario || !usuario) return
     document.getElementById('nombre-usuario').textContent = usuario.nombre
+
+    await checkTodayEmotion(usuarioActual.id)
 
     const { data: psicos } = await supabase
       .from('psicoorientadores')
@@ -110,9 +128,49 @@ function obtenerSugerencia() {
   return document.getElementById('sugerencia-emocional') || crearSugerencia()
 }
 
+function disableEmotionCards() {
+  document.querySelectorAll('.emo-card').forEach(c => {
+    c.classList.add('disabled')
+  })
+}
+
+function highlightTodayEmotion(emocion) {
+  const attr = dataAttrDesdeEmocion[emocion]
+  if (!attr) return
+  const card = document.querySelector(`.emo-card[data-emotion="${attr}"]`)
+  if (card) {
+    card.classList.add('registered-today')
+  }
+}
+
+async function checkTodayEmotion(userId) {
+  const today = new Date().toISOString().split('T')[0]
+  const { data } = await supabase
+    .from('registros_emocionales')
+    .select('id, emocion')
+    .eq('estudiante_id', userId)
+    .gte('registrado_en', today + 'T00:00:00')
+    .lte('registrado_en', today + 'T23:59:59')
+    .maybeSingle()
+
+  if (data) {
+    highlightTodayEmotion(data.emocion)
+    disableEmotionCards()
+    const msgEl = document.getElementById('emocion-status-msg')
+    if (msgEl) {
+      msgEl.innerHTML = `<strong>Ya registraste cómo te sientes hoy ✓</strong> Vuelve mañana para un nuevo registro.<br><span style="font-size:0.8rem;opacity:0.7;">Próximo registro disponible: mañana</span>`
+      msgEl.style.display = 'block'
+    }
+    return data.emocion
+  }
+  return null
+}
+
 document.querySelectorAll('.emo-card').forEach(card => {
   card.addEventListener('click', async () => {
     try {
+      if (card.classList.contains('disabled') || card.classList.contains('registered-today')) return
+
       document.querySelectorAll('.emo-card').forEach(c => c.classList.remove('selected'))
       card.classList.add('selected')
 
@@ -124,10 +182,34 @@ document.querySelectorAll('.emo-card').forEach(card => {
         if (!usuarioActual) return
       }
 
+      const today = new Date().toISOString().split('T')[0]
+      const { data: existing } = await supabase
+        .from('registros_emocionales')
+        .select('id')
+        .eq('estudiante_id', usuarioActual.id)
+        .gte('registrado_en', today + 'T00:00:00')
+        .lte('registrado_en', today + 'T23:59:59')
+        .maybeSingle()
+
+      if (existing) {
+        document.querySelectorAll('.emo-card').forEach(c => c.classList.remove('selected'))
+        await checkTodayEmotion(usuarioActual.id)
+        return
+      }
+
       await supabase.from('registros_emocionales').insert({
         estudiante_id: usuarioActual.id,
         emocion
       })
+
+      highlightTodayEmotion(emocion)
+      disableEmotionCards()
+
+      const msgEl = document.getElementById('emocion-status-msg')
+      if (msgEl) {
+        msgEl.innerHTML = `<strong>Ya registraste cómo te sientes hoy ✓</strong> Vuelve mañana para un nuevo registro.<br><span style="font-size:0.8rem;opacity:0.7;">Próximo registro disponible: mañana</span>`
+        msgEl.style.display = 'block'
+      }
 
       const info = mensajesEmocionales[emocion]
       if (!info) return

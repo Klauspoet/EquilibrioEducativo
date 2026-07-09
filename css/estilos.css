@@ -767,6 +767,35 @@ body.dark .btn-secundario:hover {
     color: var(--color-primario);
 }
 
+/* ── EMOTION CARD: DAILY LIMIT STATES ── */
+.emo-card.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.emo-card.registered-today {
+    opacity: 1 !important;
+    pointer-events: none;
+    border: 2px solid #10B981;
+    box-shadow: 0 0 12px rgba(16,185,129,0.3);
+}
+
+.emocion-status-msg {
+    text-align: center;
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    border-radius: var(--radio-card);
+    font-size: 0.9rem;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: var(--color-texto-muted);
+}
+
+.emocion-status-msg strong {
+    color: var(--color-exito);
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
     .app-layout {
