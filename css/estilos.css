@@ -81,14 +81,13 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 48px 24px;
-    min-height: calc(100vh - 170px);
+    padding: 32px 24px;
 }
 
 .tarjeta-inicio {
     background: var(--color-blanco);
     border-radius: 16px;
-    padding: 48px 40px;
+    padding: 28px;
     max-width: 420px;
     width: 100%;
     text-align: center;
@@ -260,8 +259,7 @@ main {
 .page-content {
     margin-left: 64px;
     flex: 1;
-    padding: 40px 32px;
-    min-height: 100vh;
+    padding: 28px 24px;
 }
 
 /* ── CONTENEDOR GENERAL ── */
@@ -280,7 +278,7 @@ main {
 
 .contenedor > p {
     color: var(--color-texto-muted);
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     font-size: 0.9rem;
     line-height: 1.6;
 }
@@ -331,7 +329,7 @@ main {
 .emotion-row {
     display: flex;
     gap: 10px;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
 }
 
@@ -582,7 +580,7 @@ body.dark .sidebar {
     border-radius: 20px;
     padding: 28px 32px;
     backdrop-filter: blur(10px);
-    margin-bottom: 32px;
+    margin-bottom: 24px;
 }
 
 .gradient-name {
@@ -903,7 +901,7 @@ body.dark .btn-secundario:hover {
     background: var(--color-blanco);
     border-radius: var(--radio-card);
     padding: 20px 24px;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     box-shadow: var(--sombra-card);
     display: flex;
     align-items: center;
@@ -1262,8 +1260,8 @@ body {
 .stats-bar {
   display: flex;
   justify-content: center;
-  gap: 64px;
-  padding: 36px 24px;
+  gap: 48px;
+  padding: 28px 24px;
   background: #fff;
   border-bottom: 1px solid #E5E7EB;
 }
@@ -1332,8 +1330,7 @@ body.dark .skeleton {
 /* ── EMPTY STATE ── */
 .empty-state {
   text-align: center;
-  padding: 48px 20px;
-  color: rgba(255,255,255,0.4);
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1347,22 +1344,15 @@ body.dark .skeleton {
 .empty-state h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.6);
+  color: var(--color-texto);
   margin: 0;
 }
 .empty-state p {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.35);
+  color: var(--color-texto-muted);
   margin: 0;
   max-width: 260px;
   line-height: 1.5;
-}
-
-body.dark .empty-state h4 {
-  color: rgba(255,255,255,0.6);
-}
-body.dark .empty-state p {
-  color: rgba(255,255,255,0.35);
 }
 
 /* ── GLOBAL SPACING FIX ── */
@@ -1373,12 +1363,6 @@ body.dark .empty-state p {
 }
 .tarjeta-grafica {
   margin-bottom: 20px;
-}
-.lista-cards {
-  min-height: unset;
-}
-.page-content {
-  padding: 32px 28px;
 }
 
 /* ── PREFERS-REDUCED-MOTION ── */

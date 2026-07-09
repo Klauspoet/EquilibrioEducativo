@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
 
 const params = new URLSearchParams(window.location.search)
 const chatId = params.get('chat_id') || localStorage.getItem('chat_id_actual')
@@ -63,13 +63,7 @@ async function cargarMensajes() {
     mensajesDiv.innerHTML = ''
 
     if (!data || data.length === 0) {
-      mensajesDiv.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">💬</div>
-          <h4>Sin mensajes aún</h4>
-          <p>Inicia la conversación escribiendo tu primer mensaje.</p>
-        </div>
-      `
+      renderEmptyState(mensajesDiv, '💬', 'Sin mensajes aún', 'Inicia la conversación escribiendo tu primer mensaje.')
       return
     }
 

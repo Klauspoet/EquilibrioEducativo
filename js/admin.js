@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
 
 async function cargarPanel() {
   showLoader()
@@ -38,13 +38,7 @@ async function cargarPsicoorientadores() {
     aprobados.innerHTML = ''
 
     if (!psicos?.length) {
-      pendientes.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📋</div>
-          <h4>Sin datos disponibles</h4>
-          <p>No hay información para mostrar en este momento.</p>
-        </div>
-      `
+      renderEmptyState(pendientes, '📋', 'Sin datos disponibles', 'No hay información para mostrar en este momento.')
       return
     }
 
@@ -99,23 +93,11 @@ async function cargarPsicoorientadores() {
     }
 
     if (pendientes.innerHTML === '') {
-      pendientes.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📋</div>
-          <h4>Sin datos disponibles</h4>
-          <p>No hay psicoorientadores pendientes.</p>
-        </div>
-      `
+      renderEmptyState(pendientes, '📋', 'Sin datos disponibles', 'No hay psicoorientadores pendientes.')
     }
 
     if (aprobados.innerHTML === '') {
-      aprobados.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📋</div>
-          <h4>Sin datos disponibles</h4>
-          <p>No hay psicoorientadores aprobados aún.</p>
-        </div>
-      `
+      renderEmptyState(aprobados, '📋', 'Sin datos disponibles', 'No hay psicoorientadores aprobados aún.')
     }
   } catch (err) {
     console.error('Error al cargar psicoorientadores:', err)
@@ -133,13 +115,7 @@ async function cargarEstudiantes() {
     lista.innerHTML = ''
 
     if (!estudiantes?.length) {
-      lista.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">🎓</div>
-          <h4>Sin estudiantes asignados</h4>
-          <p>Aún no tienes estudiantes asignados a tu perfil.</p>
-        </div>
-      `
+      renderEmptyState(lista, '🎓', 'Sin estudiantes registrados', 'Aún no hay estudiantes registrados en el sistema.')
       return
     }
 

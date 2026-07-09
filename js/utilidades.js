@@ -44,6 +44,16 @@ export function showLoader() {
   }
 }
 
+export function renderEmptyState(container, emoji, title, desc) {
+  container.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">${emoji}</div>
+      <h4>${title}</h4>
+      <p>${desc}</p>
+    </div>
+  `
+}
+
 export function hideLoader() {
   const loader = document.getElementById('loader-overlay')
   if (loader) {

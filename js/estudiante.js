@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
 
 const mensajesEmocionales = {
   'Triste': { texto: '💙 Está bien no estar bien. Hablar con alguien puede ayudarte mucho.', urgente: true },
@@ -53,13 +53,7 @@ async function cargarPsicoorientadores() {
     lista.innerHTML = ''
 
     if (!psicos || psicos.length === 0) {
-      lista.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">👥</div>
-          <h4>Sin orientadores disponibles</h4>
-          <p>No hay psicoorientadores asignados por el momento.</p>
-        </div>
-      `
+      renderEmptyState(lista, '👥', 'Sin orientadores disponibles', 'No hay psicoorientadores asignados por el momento.')
       return
     }
 

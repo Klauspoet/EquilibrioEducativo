@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
 
 const emojis = {
   'Triste': '😔', 'Regular': '😐', 'Bien': '🙂', 'Genial': '😄', 'Ansioso': '😰'
@@ -24,13 +24,7 @@ async function cargarHistorial() {
     const lista = document.getElementById('lista-registros')
 
     if (!registros || registros.length === 0) {
-      lista.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📭</div>
-          <h4>Sin registros aún</h4>
-          <p>Empieza registrando cómo te sientes hoy.</p>
-        </div>
-      `
+      renderEmptyState(lista, '📭', 'Sin registros aún', 'Empieza registrando cómo te sientes hoy.')
       return
     }
 
