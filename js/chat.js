@@ -62,6 +62,17 @@ async function cargarMensajes() {
 
     mensajesDiv.innerHTML = ''
 
+    if (!data || data.length === 0) {
+      mensajesDiv.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">💬</div>
+          <h4>Sin mensajes aún</h4>
+          <p>Inicia la conversación escribiendo tu primer mensaje.</p>
+        </div>
+      `
+      return
+    }
+
     if (!usuarioActual) {
       usuarioActual = await obtenerUsuarioActual()
       if (!usuarioActual) return

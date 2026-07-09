@@ -52,6 +52,17 @@ async function cargarPsicoorientadores() {
     const lista = document.getElementById('lista-psicoorientadores')
     lista.innerHTML = ''
 
+    if (!psicos || psicos.length === 0) {
+      lista.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">👥</div>
+          <h4>Sin orientadores disponibles</h4>
+          <p>No hay psicoorientadores asignados por el momento.</p>
+        </div>
+      `
+      return
+    }
+
     ;(psicos ?? []).forEach(psico => {
       const card = document.createElement('div')
       card.className = 'card-psico'

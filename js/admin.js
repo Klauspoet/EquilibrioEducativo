@@ -38,7 +38,13 @@ async function cargarPsicoorientadores() {
     aprobados.innerHTML = ''
 
     if (!psicos?.length) {
-      pendientes.innerHTML = '<p class="vacio">No hay psicoorientadores registrados.</p>'
+      pendientes.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <h4>Sin datos disponibles</h4>
+          <p>No hay información para mostrar en este momento.</p>
+        </div>
+      `
       return
     }
 
@@ -93,7 +99,23 @@ async function cargarPsicoorientadores() {
     }
 
     if (pendientes.innerHTML === '') {
-      pendientes.innerHTML = '<p class="vacio">No hay psicoorientadores pendientes.</p>'
+      pendientes.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <h4>Sin datos disponibles</h4>
+          <p>No hay psicoorientadores pendientes.</p>
+        </div>
+      `
+    }
+
+    if (aprobados.innerHTML === '') {
+      aprobados.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <h4>Sin datos disponibles</h4>
+          <p>No hay psicoorientadores aprobados aún.</p>
+        </div>
+      `
     }
   } catch (err) {
     console.error('Error al cargar psicoorientadores:', err)
@@ -111,7 +133,13 @@ async function cargarEstudiantes() {
     lista.innerHTML = ''
 
     if (!estudiantes?.length) {
-      lista.innerHTML = '<p class="vacio">No hay estudiantes registrados.</p>'
+      lista.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🎓</div>
+          <h4>Sin estudiantes asignados</h4>
+          <p>Aún no tienes estudiantes asignados a tu perfil.</p>
+        </div>
+      `
       return
     }
 

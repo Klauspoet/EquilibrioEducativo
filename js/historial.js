@@ -24,7 +24,13 @@ async function cargarHistorial() {
     const lista = document.getElementById('lista-registros')
 
     if (!registros || registros.length === 0) {
-      lista.innerHTML = '<p class="vacio">No tienes registros emocionales aún. Selecciona cómo te sientes en el panel principal.</p>'
+      lista.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <h4>Sin registros aún</h4>
+          <p>Empieza registrando cómo te sientes hoy.</p>
+        </div>
+      `
       return
     }
 

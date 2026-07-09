@@ -25,7 +25,13 @@ async function cargarChats() {
     if (errorPsico) return
 
     if (!psico) {
-      document.getElementById('lista-chats').innerHTML = '<p class="vacio">No se encontró tu perfil de psicoorientador.</p>'
+      document.getElementById('lista-chats').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🎓</div>
+          <h4>Sin estudiantes asignados</h4>
+          <p>Aún no tienes estudiantes asignados a tu perfil.</p>
+        </div>
+      `
       return
     }
 
@@ -38,7 +44,13 @@ async function cargarChats() {
     lista.innerHTML = ''
 
     if (!chats?.length) {
-      lista.innerHTML = '<p class="vacio">No tienes conversaciones activas aún.</p>'
+      lista.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">💬</div>
+          <h4>Sin mensajes aún</h4>
+          <p>No tienes conversaciones activas aún.</p>
+        </div>
+      `
       return
     }
 
