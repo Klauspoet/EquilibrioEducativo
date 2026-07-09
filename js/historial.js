@@ -22,9 +22,19 @@ async function cargarHistorial() {
       .order('registrado_en', { ascending: false })
 
     const lista = document.getElementById('lista-registros')
+    // Limpiar skeletons SIEMPRE antes de renderizar
+    lista.innerHTML = ''
+
+    // Ocultar skeleton del chart
+    const skelChart = document.getElementById('skeleton-chart')
+    if (skelChart) skelChart.style.display = 'none'
 
     if (!registros || registros.length === 0) {
-      renderEmptyState(lista, '📭', 'Sin registros aún', 'Empieza registrando cómo te sientes hoy.')
+      // Ocultar la gráfica si no hay datos
+      const graficaContainer = document.querySelector('.tarjeta-grafica')
+      if (graficaContainer) graficaContainer.style.display = 'none'
+
+      renderEmptyState(lista, '📭', 'Sin registros aún', 'Empieza registrando cómo te sientes hoy desde el dashboard.')
       return
     }
 
@@ -32,9 +42,6 @@ async function cargarHistorial() {
     registros.forEach(r => {
       if (conteo[r.emocion] !== undefined) conteo[r.emocion]++
     })
-
-    const skelChart = document.getElementById('skeleton-chart')
-    if (skelChart) skelChart.style.display = 'none'
 
     const ctx = document.getElementById('graficaEmociones').getContext('2d')
     new Chart(ctx, {
@@ -56,7 +63,7 @@ async function cargarHistorial() {
           y: {
             beginAtZero: true,
             ticks: { stepSize: 1 },
-            grid: { color: '#f0f0f0' }
+            grid: { color: 'rgba(255,255,255,0.05)' }
           },
           x: { grid: { display: false } }
         }
@@ -75,6 +82,9 @@ async function cargarHistorial() {
     })
   } catch (err) {
     console.error('Error al cargar historial:', err)
+    const lista = document.getElementById('lista-registros')
+    lista.innerHTML = ''
+    renderEmptyState(lista, '⚠️', 'Error al cargar', 'No se pudo obtener el historial. Intenta de nuevo.')
   } finally {
     hideLoader()
   }
