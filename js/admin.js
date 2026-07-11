@@ -30,7 +30,7 @@ async function cargarPsicoorientadores() {
   try {
     const { data: psicos } = await supabase
       .from('psicoorientadores')
-      .select('*, usuarios(nombre, correo)')
+      .select('id, usuario_id, especialidad, estado, disponible, usuarios(nombre, correo)')
 
     const pendientes = document.getElementById('lista-pendientes')
     const aprobados = document.getElementById('lista-aprobados')
@@ -54,20 +54,24 @@ async function cargarPsicoorientadores() {
       })
     }
 
-    for (const psico of psicos) {
+    const urlsFirmadas = {}
+    await Promise.all(
+      Object.entries(mapaExtension).map(async ([id, ext]) => {
+        const { data } = await supabase.storage
+          .from('titulos')
+          .createSignedUrl(`${id}.${ext}`, 3600)
+        if (data) urlsFirmadas[id] = data.signedUrl
+      })
+    )
+
+    psicos.forEach(psico => {
       const card = document.createElement('div')
       card.className = 'card-psico'
 
-      let htmlBotonTitulo = '<p class="texto-muted" style="font-size:0.85rem;">Sin título subido</p>'
-      const ext = mapaExtension[psico.usuario_id]
-      if (ext) {
-        const { data } = await supabase.storage
-          .from('titulos')
-          .createSignedUrl(`${psico.usuario_id}.${ext}`, 3600)
-        if (data) {
-          htmlBotonTitulo = `<a href="${data.signedUrl}" target="_blank" class="btn-titulo">📄 Ver título</a>`
-        }
-      }
+      const url = urlsFirmadas[psico.usuario_id]
+      const htmlBotonTitulo = url
+        ? `<a href="${url}" target="_blank" class="btn-titulo">📄 Ver título</a>`
+        : '<p class="texto-muted" style="font-size:0.85rem;">Sin título subido</p>'
 
       const infoBasica = `
         <h3>${psico.usuarios.nombre}</h3>
@@ -90,7 +94,7 @@ async function cargarPsicoorientadores() {
         `
         aprobados.appendChild(card)
       }
-    }
+    })
 
     if (pendientes.innerHTML === '') {
       renderEmptyState(pendientes, '📋', 'Sin datos disponibles', 'No hay psicoorientadores pendientes.')
@@ -110,6 +114,8 @@ async function cargarEstudiantes() {
       .from('usuarios')
       .select('nombre, correo, creado_en')
       .eq('rol', 'estudiante')
+      .order('creado_en', { ascending: false })
+      .limit(100)
 
     const lista = document.getElementById('lista-estudiantes')
     lista.innerHTML = ''

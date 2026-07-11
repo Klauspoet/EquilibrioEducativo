@@ -15,11 +15,16 @@ async function cargarHistorial() {
     const user = await obtenerUsuarioActual()
     if (!user) return
 
+    const treintaDiasAtras = new Date()
+    treintaDiasAtras.setDate(treintaDiasAtras.getDate() - 30)
+
     const { data: registros } = await supabase
       .from('registros_emocionales')
-      .select('*')
+      .select('id, emocion, registrado_en')
       .eq('estudiante_id', user.id)
+      .gte('registrado_en', treintaDiasAtras.toISOString())
       .order('registrado_en', { ascending: false })
+      .limit(50)
 
     const lista = document.getElementById('lista-registros')
     // Limpiar skeletons SIEMPRE antes de renderizar
