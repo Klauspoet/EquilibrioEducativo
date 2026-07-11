@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState, escapeHtml } from './utilidades.js'
 
 const mensajesEmocionales = {
   'Triste': { texto: '💙 Está bien no estar bien. Hablar con alguien puede ayudarte mucho.', urgente: true },
@@ -66,11 +66,11 @@ async function cargarPsicoorientadores() {
         <div class="card-header-row">
           <div class="card-avatar">${iniciales}</div>
           <div>
-            <h3>${nombre}</h3>
-            <span class="specialty-tag">${psico.especialidad || 'Psicoorientador'}</span>
+            <h3>${escapeHtml(nombre)}</h3>
+            <span class="specialty-tag">${escapeHtml(psico.especialidad || 'Psicoorientador')}</span>
           </div>
         </div>
-        <p>${psico.descripcion || ''}</p>
+        <p>${escapeHtml(psico.descripcion || '')}</p>
         <button class="btn-principal" onclick="window.iniciarChat('${psico.usuario_id}')">
           Iniciar chat
         </button>
@@ -176,6 +176,7 @@ document.querySelectorAll('.emo-card').forEach(card => {
     try {
       if (card.classList.contains('disabled') || card.classList.contains('registered-today')) return
 
+      disableEmotionCards()
       document.querySelectorAll('.emo-card').forEach(c => c.classList.remove('selected'))
       card.classList.add('selected')
 
@@ -229,6 +230,7 @@ document.querySelectorAll('.emo-card').forEach(card => {
       `
     } catch (err) {
       console.error('Error al registrar emoción:', err)
+      document.querySelectorAll('.emo-card').forEach(c => c.classList.remove('disabled', 'selected'))
     }
   })
 })

@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState, escapeHtml } from './utilidades.js'
 
 async function cargarPanel() {
   showLoader()
@@ -74,9 +74,9 @@ async function cargarPsicoorientadores() {
         : '<p class="texto-muted" style="font-size:0.85rem;">Sin título subido</p>'
 
       const infoBasica = `
-        <h3>${psico.usuarios.nombre}</h3>
-        <p>${psico.usuarios.correo}</p>
-        <p>${psico.especialidad || 'Sin especialidad'}</p>
+        <h3>${escapeHtml(psico.usuarios.nombre)}</h3>
+        <p>${escapeHtml(psico.usuarios.correo)}</p>
+        <p>${escapeHtml(psico.especialidad || 'Sin especialidad')}</p>
         ${htmlBotonTitulo}
       `
 
@@ -129,8 +129,8 @@ async function cargarEstudiantes() {
       const card = document.createElement('div')
       card.className = 'card-psico'
       card.innerHTML = `
-        <h3>${est.nombre}</h3>
-        <p>${est.correo}</p>
+        <h3>${escapeHtml(est.nombre)}</h3>
+        <p>${escapeHtml(est.correo)}</p>
         <p class="texto-chico-muted">Registrado: ${new Date(est.creado_en).toLocaleDateString('es-CO')}</p>
       `
       lista.appendChild(card)

@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState, escapeHtml } from './utilidades.js'
 
 const params = new URLSearchParams(window.location.search)
 const chatId = params.get('chat_id') || localStorage.getItem('chat_id_actual')
@@ -14,12 +14,12 @@ if (!chatId) {
   window.location.href = 'estudiante.html'
 }
 
-if (Notification.permission === 'default') {
+if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
   Notification.requestPermission()
 }
 
 function mostrarNotificacion(nombre, mensaje) {
-  if (Notification.permission === 'granted') {
+  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
     new Notification(`Mensaje de ${nombre}`, {
       body: mensaje,
       icon: 'img/logo.png'
@@ -58,7 +58,11 @@ async function cargarMensajes() {
       .eq('chat_id', chatId)
       .order('enviado_en', { ascending: true })
 
-    if (error || !data) return
+    if (error || !data) {
+      mensajesDiv.innerHTML = ''
+      renderEmptyState(mensajesDiv, '⚠️', 'Error', 'No se pudieron cargar los mensajes. Intenta de nuevo.')
+      return
+    }
 
     mensajesDiv.innerHTML = ''
 
@@ -76,8 +80,8 @@ async function cargarMensajes() {
       const div = document.createElement('div')
       div.className = msg.enviado_por === usuarioActual.id ? 'mensaje propio' : 'mensaje otro'
       div.innerHTML = `
-        <span class="nombre">${msg.usuarios.nombre}</span>
-        <p>${msg.texto}</p>
+        <span class="nombre">${escapeHtml(msg.usuarios.nombre)}</span>
+        <p>${escapeHtml(msg.texto)}</p>
         <span class="hora">${new Date(msg.enviado_en).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}</span>
       `
       mensajesDiv.appendChild(div)
@@ -93,8 +97,8 @@ function agregarMensajeDOM(texto, nombre) {
   const div = document.createElement('div')
   div.className = 'mensaje propio'
   div.innerHTML = `
-    <span class="nombre">${nombre}</span>
-    <p>${texto}</p>
+    <span class="nombre">${escapeHtml(nombre)}</span>
+    <p>${escapeHtml(texto)}</p>
     <span class="hora">${new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}</span>
   `
   mensajesDiv.appendChild(div)

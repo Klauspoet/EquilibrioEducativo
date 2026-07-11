@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js'
-import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState } from './utilidades.js'
+import { obtenerUsuarioActual, configurarCierreSesion, showLoader, hideLoader, renderEmptyState, escapeHtml } from './utilidades.js'
 
 async function cargarChats() {
   showLoader()
@@ -46,7 +46,7 @@ async function cargarChats() {
       const card = document.createElement('div')
       card.className = 'card-psico'
       card.innerHTML = `
-        <h3>${chat.usuarios.nombre}</h3>
+        <h3>${escapeHtml(chat.usuarios.nombre)}</h3>
         <p>Conversación activa</p>
         <button class="btn-principal" onclick="localStorage.setItem('chat_id_actual', '${chat.id}'); window.location.href='chat.html'">
           Abrir chat
