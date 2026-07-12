@@ -100,7 +100,9 @@ window.iniciarChat = async (psicoorientadorId) => {
 
     if (chatExistente) {
       localStorage.setItem('chat_id_actual', chatExistente.id)
-      window.location.href = 'chat.html'
+      if (typeof window.iniciarChatLateral === 'function') {
+        window.iniciarChatLateral(chatExistente.id)
+      }
       return
     }
 
@@ -115,11 +117,35 @@ window.iniciarChat = async (psicoorientadorId) => {
 
     if (errorChat || !nuevoChat) return
     localStorage.setItem('chat_id_actual', nuevoChat.id)
-    window.location.href = 'chat.html'
+    if (typeof window.iniciarChatLateral === 'function') {
+      window.iniciarChatLateral(nuevoChat.id)
+    }
   } catch (err) {
     console.error('Error al iniciar chat:', err)
   }
 }
+
+// Configurar botón del menú lateral de Chat
+document.addEventListener('DOMContentLoaded', () => {
+  const btnAbrirChatMenu = document.getElementById('btn-abrir-chat-menu')
+  if (btnAbrirChatMenu) {
+    btnAbrirChatMenu.addEventListener('click', (e) => {
+      e.preventDefault()
+      const chatGuardado = localStorage.getItem('chat_id_actual')
+      const panel = document.getElementById('chat-lateral')
+      if (panel) {
+        if (panel.classList.contains('activo')) {
+          panel.classList.remove('activo')
+        } else {
+          panel.classList.add('activo')
+          if (chatGuardado && typeof window.iniciarChatLateral === 'function') {
+            window.iniciarChatLateral(chatGuardado)
+          }
+        }
+      }
+    })
+  }
+})
 
 function crearSugerencia() {
   const sugerencia = document.createElement('div')

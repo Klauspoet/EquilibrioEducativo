@@ -24,7 +24,7 @@
 
         <nav class="sidebar">
            <img src="/img/logo.png" class="sidebar-logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 12px; padding: 4px;" alt="Logo">
-            <a href="#" class="sidebar-icon" title="Chats" aria-label="Chats">💬</a>
+            <a href="#" id="btn-abrir-chat-menu" class="sidebar-icon" title="Chats" aria-label="Chats">💬</a>
             <a href="#" class="sidebar-icon" title="Estadísticas" aria-label="Estadísticas">📊</a>
            <a href="#" class="sidebar-icon" title="Cambiar tema" id="btn-tema" aria-label="Cambiar tema">🌙</a>
 <a href="#" class="sidebar-icon bottom" title="Cerrar sesión" id="btn-logout" aria-label="Cerrar sesión">🚪</a>
@@ -42,6 +42,9 @@
             </div>
         </main>
 
+        <!-- Chat lateral persistente derecho -->
+        <aside id="chat-lateral" class="chat-lateral"></aside>
+
     </div>
 
     <div id="loader-overlay" class="loader-overlay" style="display:none;">
@@ -52,6 +55,7 @@
         </div>
     </div>
     <script type="module" src="js/psicoorientadores.js"></script>
+    <script type="module" src="js/chat-panel.js"></script>
     <script type="module" src="js/tema.js"></script>
     <script src="js/animations.js"></script>
 </body>

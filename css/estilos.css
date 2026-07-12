@@ -1292,6 +1292,236 @@ body {
   }
 }
 
+/* ── CHAT LATERAL PERSISTENTE DERECHO ── */
+.chat-lateral {
+    width: 380px;
+    background: var(--color-blanco);
+    border-left: 1px solid var(--color-borde);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 150;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, width 0.3s ease;
+    transform: translateX(100%); /* Oculto por defecto si no tiene clase activo */
+}
+
+.chat-lateral.activo {
+    transform: translateX(0);
+}
+
+.chat-lateral-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 32px;
+    text-align: center;
+    color: var(--color-texto-muted);
+}
+
+.chat-lateral-vacio .vacio-icono {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.6;
+    animation: pulse-btn 3s infinite;
+}
+
+.chat-lateral-vacio h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-texto);
+}
+
+.chat-lateral-vacio p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.chat-lateral-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-borde);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-blanco);
+}
+
+.chat-lateral-receptor-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-lateral-avatar {
+    width: 38px;
+    height: 38px;
+    background: var(--gradiente-principal);
+    color: white;
+    font-size: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.chat-lateral-header h4 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
+.chat-lateral-estado {
+    font-size: 0.72rem;
+    color: var(--color-exito);
+    font-weight: 500;
+    display: block;
+}
+
+.btn-cerrar-chat {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--color-texto-muted);
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s, transform 0.2s;
+    line-height: 1;
+}
+
+.btn-cerrar-chat:hover {
+    color: var(--color-alerta);
+    transform: scale(1.15);
+}
+
+.chat-lateral-mensajes {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--color-blanco);
+}
+
+.msg-lat {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    position: relative;
+    word-break: break-word;
+}
+
+.msg-lat.otro {
+    background: var(--color-bg);
+    color: var(--color-texto);
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+}
+
+.msg-lat.propio {
+    background: var(--gradiente-principal);
+    color: white;
+    border-bottom-right-radius: 4px;
+    align-self: flex-end;
+}
+
+.msg-lat .nombre {
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 3px;
+    opacity: 0.8;
+}
+
+.msg-lat .hora {
+    font-size: 0.65rem;
+    display: block;
+    margin-top: 4px;
+    opacity: 0.7;
+    text-align: right;
+}
+
+.chat-lateral-input {
+    padding: 14px 16px;
+    border-top: 1px solid var(--color-borde);
+    display: flex;
+    gap: 8px;
+    background: var(--color-blanco);
+    align-items: center;
+}
+
+.chat-lateral-input input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1.5px solid var(--color-borde);
+    border-radius: 24px;
+    font-size: 0.85rem;
+    font-family: var(--font-family);
+    color: var(--color-texto);
+    background: var(--color-bg);
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.chat-lateral-input input:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    background: var(--color-blanco);
+}
+
+.chat-lateral-input button {
+    background: var(--gradiente-principal);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.chat-lateral-input button:hover {
+    opacity: 0.92;
+    transform: scale(1.05);
+}
+
+/* Redimensionar el contenido principal cuando el chat lateral esté activo */
+.app-layout:has(.chat-lateral.activo) .page-content {
+    margin-right: 380px;
+}
+
+/* En resoluciones menores, el chat lateral se superpone como un modal deslizante */
+@media (max-width: 1024px) {
+    .chat-lateral {
+        width: 320px;
+    }
+    .app-layout:has(.chat-lateral.activo) .page-content {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-lateral {
+        width: 100%;
+        height: calc(100vh - 58px); /* Dejar espacio para la barra de navegación inferior móvil */
+        top: 0;
+        z-index: 250;
+    }
+}
+
 /* ── SKELETON LOADING ── */
 .skeleton {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);

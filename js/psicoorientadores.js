@@ -48,7 +48,7 @@ async function cargarChats() {
       card.innerHTML = `
         <h3>${escapeHtml(chat.usuarios.nombre)}</h3>
         <p>Conversación activa</p>
-        <button class="btn-principal" onclick="localStorage.setItem('chat_id_actual', '${chat.id}'); window.location.href='chat.html'">
+        <button class="btn-principal" onclick="localStorage.setItem('chat_id_actual', '${chat.id}'); if (typeof window.iniciarChatLateral === 'function') { window.iniciarChatLateral('${chat.id}'); }">
           Abrir chat
         </button>
       `
@@ -60,6 +60,28 @@ async function cargarChats() {
     hideLoader()
   }
 }
+
+// Configurar botón del menú lateral de Chat
+document.addEventListener('DOMContentLoaded', () => {
+  const btnAbrirChatMenu = document.getElementById('btn-abrir-chat-menu')
+  if (btnAbrirChatMenu) {
+    btnAbrirChatMenu.addEventListener('click', (e) => {
+      e.preventDefault()
+      const chatGuardado = localStorage.getItem('chat_id_actual')
+      const panel = document.getElementById('chat-lateral')
+      if (panel) {
+        if (panel.classList.contains('activo')) {
+          panel.classList.remove('activo')
+        } else {
+          panel.classList.add('activo')
+          if (chatGuardado && typeof window.iniciarChatLateral === 'function') {
+            window.iniciarChatLateral(chatGuardado)
+          }
+        }
+      }
+    })
+  }
+})
 
 configurarCierreSesion()
 cargarChats()
