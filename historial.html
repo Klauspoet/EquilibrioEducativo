@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial — Equilibrio Educativo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="Historial emocional — Equilibrio Educativo. Revisa cómo te has sentido con el tiempo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .empty-state .empty-icon {
+            font-size: 2.8rem;
+            margin-bottom: 4px;
+            opacity: 0.7;
+        }
+        .empty-state h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            margin: 0;
+        }
+        .empty-state p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.35);
+            margin: 0;
+            max-width: 260px;
+            line-height: 1.5;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            border-left: 3px solid var(--color-primario);
+            padding-left: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="/index.html">
+            <img src="/img/logo.png" alt="Equilibrio Educativo" class="nav-logo">
+        </a>
+        <span class="nav-brand">Equilibrio Educativo</span>
+    </nav>
+
+    <div class="app-layout">
+
+        <nav class="sidebar">
+            <img src="/img/logo.png" class="sidebar-logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 12px; padding: 4px;" alt="Logo">
+            <a href="estudiante.html" class="sidebar-icon" title="Inicio" aria-label="Inicio">🏠</a>
+            <a href="chat.html" class="sidebar-icon" title="Chat" aria-label="Chat">💬</a>
+            <a href="historial.html" class="sidebar-icon active" title="Historial" aria-label="Historial">📊</a>
+            <a href="#" class="sidebar-icon" title="Cambiar tema" id="btn-tema" aria-label="Cambiar tema">🌙</a>
+            <a href="#" class="sidebar-icon bottom" title="Cerrar sesión" id="btn-logout" aria-label="Cerrar sesión">🚪</a>
+        </nav>
+
+        <main class="page-content">
+            <div class="contenedor">
+                <h2>Tu historial emocional 📊</h2>
+                <p>Aquí puedes ver cómo te has sentido con el tiempo.</p>
+
+                <div class="tarjeta-grafica animate-on-scroll">
+                    <div class="skeleton" id="skeleton-chart" style="height: 200px; width: 100%;"></div>
+                    <canvas id="graficaEmociones" height="100"></canvas>
+                </div>
+
+                <h3 class="section-title">Registros recientes</h3>
+                <div id="lista-registros" class="lista-cards">
+                    <!-- JS llenará esto — sin skeletons estáticos -->
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
+
+    <script type="module" src="js/historial.js"></script>
+    <script type="module" src="js/tema.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

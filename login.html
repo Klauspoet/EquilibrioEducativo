@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión — Equilibrio Educativo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="Inicia sesión en Equilibrio Educativo — tu espacio seguro de bienestar emocional.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: #1F2937;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        a { text-decoration: none; }
+        .login-hero {
+            background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+            color: #fff;
+            text-align: center;
+            padding: 60px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.12) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .login-hero > * { position: relative; z-index: 1; }
+        .login-logo-wrapper {
+            background: #fff;
+            border-radius: 16px;
+            padding: 10px 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .login-logo-wrapper img {
+            width: 140px;
+            height: auto;
+            display: block;
+        }
+        .login-hero h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0 0 8px;
+            line-height: 1.15;
+        }
+        .login-hero p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 420px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .login-card-wrap {
+            max-width: 420px;
+            margin: -48px auto 0;
+            padding: 0 24px 60px;
+            position: relative;
+            z-index: 2;
+        }
+        .login-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 36px 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid #E5E7EB;
+        }
+        .login-card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 24px;
+            color: #1F2937;
+            text-align: center;
+        }
+        .login-footer {
+            background: #1F2937;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 20px 24px;
+            font-size: 0.82rem;
+        }
+        @media (max-width: 768px) {
+            .login-hero { padding: 48px 20px 64px; }
+            .login-hero h1 { font-size: 1.5rem; }
+            .login-logo-wrapper img { width: 110px; }
+            .login-card-wrap { padding: 0 16px 48px; }
+            .login-card { padding: 28px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="/index.html">
+            <img src="/img/logo.png" alt="Equilibrio Educativo" class="nav-logo">
+        </a>
+        <span class="nav-brand">Equilibrio Educativo</span>
+    </nav>
+
+    <section class="login-hero">
+        <div class="login-logo-wrapper">
+            <img src="/img/logo.png" alt="Equilibrio Educativo">
+        </div>
+        <h1>Bienvenido de nuevo</h1>
+        <p>Ingresa a tu espacio seguro de bienestar emocional.</p>
+    </section>
+
+        <div class="login-card-wrap">
+        <div class="login-card animate-on-scroll">
+            <div class="campo">
+                <label>Correo institucional</label>
+                <input type="email" id="correo" placeholder="nombre@colegio.edu.co">
+            </div>
+            <div class="campo">
+                <label>Contraseña</label>
+                <div class="input-wrapper">
+                    <input type="password" id="contrasena" placeholder="Tu contraseña">
+                    <button type="button" class="toggle-password" tabindex="-1" aria-label="Mostrar contraseña">👁</button>
+                </div>
+            </div>
+            <a href="recuperar-contrasena.html" class="forgot-link">¿Olvidaste tu contraseña?</a>
+            <button class="btn-principal" id="btn-login" style="width:100%; margin-top:10px;">
+                Iniciar sesión
+            </button>
+            <p style="margin-top:16px; color:#6B7280; text-align:center; font-size:0.9rem;">
+                ¿No tienes cuenta? <a href="registro.html" style="color:#3B82F6; font-weight:600;">Regístrate</a>
+            </p>
+            <p id="mensaje" style="margin-top:12px; color:#EF4444; text-align:center; font-size:0.85rem;"></p>
+        </div>
+    </div>
+
+    <footer class="login-footer">
+        <p>© 2026 Equilibrio Educativo — Todos los derechos reservados</p>
+    </footer>
+
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
+    <script type="module" src="js/auth.js"></script>
+    <script>
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = btn.parentElement.querySelector('input')
+        const isPassword = input.type === 'password'
+        input.type = isPassword ? 'text' : 'password'
+        btn.textContent = isPassword ? '👁‍🗨' : '👁'
+        btn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña')
+      })
+    })
+    </script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

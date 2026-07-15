@@ -1,0 +1,81 @@
+<svg width="100%" viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Corazón con manos protegiéndolo</title>
+<desc>Ilustración de dos manos abiertas sosteniendo un corazón rodeado de destellos y formas suaves en tonos morado y rosa</desc>
+
+<defs>
+  <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#f3e8ff" stop-opacity="0.6"/>
+    <stop offset="100%" stop-color="#fdf4ff" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#e879f9"/>
+    <stop offset="50%" stop-color="#c026d3"/>
+    <stop offset="100%" stop-color="#9333ea"/>
+  </linearGradient>
+  <linearGradient id="handLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#f0abfc"/>
+    <stop offset="100%" stop-color="#d946ef"/>
+  </linearGradient>
+  <linearGradient id="handRightGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#f0abfc"/>
+    <stop offset="100%" stop-color="#a855f7"/>
+  </linearGradient>
+  <linearGradient id="shineGrad" x1="20%" y1="10%" x2="60%" y2="50%">
+    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+</defs>
+
+<ellipse cx="340" cy="260" rx="220" ry="200" fill="url(#bgGlow)" opacity="0.5"/>
+<ellipse cx="340" cy="260" rx="160" ry="145" fill="#fdf4ff" opacity="0.35"/>
+
+<circle cx="178" cy="148" r="22" fill="#f3e8ff" opacity="0.7"/>
+<circle cx="502" cy="155" r="16" fill="#fce7f3" opacity="0.7"/>
+<circle cx="155" cy="330" r="12" fill="#ede9fe" opacity="0.6"/>
+<circle cx="522" cy="320" r="18" fill="#fdf4ff" opacity="0.6"/>
+<circle cx="340" cy="108" r="10" fill="#fce7f3" opacity="0.55"/>
+<circle cx="258" cy="430" r="9" fill="#f3e8ff" opacity="0.5"/>
+<circle cx="430" cy="425" r="11" fill="#ede9fe" opacity="0.5"/>
+
+<line x1="178" y1="136" x2="178" y2="122" stroke="#e879f9" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="171" y1="143" x2="157" y2="143" stroke="#e879f9" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="173" y1="138" x2="163" y2="128" stroke="#e879f9" stroke-width="2" stroke-linecap="round"/>
+<line x1="183" y1="138" x2="193" y2="128" stroke="#e879f9" stroke-width="2" stroke-linecap="round"/>
+
+<line x1="502" y1="144" x2="502" y2="133" stroke="#c084fc" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="496" y1="150" x2="485" y2="150" stroke="#c084fc" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="497" y1="146" x2="489" y2="138" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
+<line x1="507" y1="146" x2="515" y2="138" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
+
+<line x1="218" y1="185" x2="218" y2="178" stroke="#f0abfc" stroke-width="1.8" stroke-linecap="round"/>
+<line x1="214" y1="189" x2="207" y2="189" stroke="#f0abfc" stroke-width="1.8" stroke-linecap="round"/>
+
+<line x1="466" y1="180" x2="466" y2="173" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/>
+<line x1="462" y1="184" x2="455" y2="184" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/>
+
+<circle cx="320" cy="155" r="5" fill="#e879f9" opacity="0.5"/>
+<circle cx="380" cy="148" r="3.5" fill="#c084fc" opacity="0.55"/>
+<circle cx="460" cy="210" r="4" fill="#f0abfc" opacity="0.5"/>
+<circle cx="222" cy="215" r="3" fill="#e879f9" opacity="0.45"/>
+<circle cx="412" cy="408" r="4" fill="#c084fc" opacity="0.45"/>
+<circle cx="278" cy="412" r="3" fill="#e879f9" opacity="0.4"/>
+
+<path d="M 170 380 C 155 355 140 330 138 305 C 136 285 148 272 165 275 C 172 276 178 280 182 287 L 185 270 C 187 255 200 248 212 253 C 218 256 222 262 223 270 L 225 258 C 227 243 240 238 252 244 C 258 247 262 254 263 262 L 265 255 C 267 242 280 237 291 244 C 298 248 301 257 300 267 L 300 310 C 300 330 292 348 280 368 L 270 390 Z" fill="url(#handLeftGrad)" opacity="0.92"/>
+<path d="M 175 295 C 175 285 182 278 190 280 C 195 281 199 286 200 293" fill="none" stroke="#d946ef" stroke-width="1.2" opacity="0.4"/>
+<path d="M 225 268 C 225 260 231 254 238 256 C 243 257 247 262 248 269" fill="none" stroke="#d946ef" stroke-width="1.2" opacity="0.4"/>
+<path d="M 265 260 C 265 252 271 247 278 249 C 283 251 286 256 287 263" fill="none" stroke="#d946ef" stroke-width="1.2" opacity="0.4"/>
+
+<path d="M 510 380 C 525 355 540 330 542 305 C 544 285 532 272 515 275 C 508 276 502 280 498 287 L 495 270 C 493 255 480 248 468 253 C 462 256 458 262 457 270 L 455 258 C 453 243 440 238 428 244 C 422 247 418 254 417 262 L 415 255 C 413 242 400 237 389 244 C 382 248 379 257 380 267 L 380 310 C 380 330 388 348 400 368 L 410 390 Z" fill="url(#handRightGrad)" opacity="0.92"/>
+<path d="M 505 295 C 505 285 498 278 490 280 C 485 281 481 286 480 293" fill="none" stroke="#a855f7" stroke-width="1.2" opacity="0.4"/>
+<path d="M 455 268 C 455 260 449 254 442 256 C 437 257 433 262 432 269" fill="none" stroke="#a855f7" stroke-width="1.2" opacity="0.4"/>
+<path d="M 415 260 C 415 252 409 247 402 249 C 397 251 394 256 393 263" fill="none" stroke="#a855f7" stroke-width="1.2" opacity="0.4"/>
+
+<g transform="translate(340, 248)">
+  <path d="M 0 -85 C 0 -85 -10 -108 -35 -108 C -62 -108 -82 -85 -82 -58 C -82 -10 0 48 0 48 C 0 48 82 -10 82 -58 C 82 -85 62 -108 35 -108 C 10 -108 0 -85 0 -85 Z" fill="url(#heartGrad)"/>
+  <path d="M 0 -85 C 0 -85 -10 -108 -35 -108 C -62 -108 -82 -85 -82 -58 C -82 -10 0 48 0 48 C 0 48 82 -10 82 -58 C 82 -85 62 -108 35 -108 C 10 -108 0 -85 0 -85 Z" fill="url(#shineGrad)"/>
+  <path d="M -42 -90 C -38 -100 -28 -106 -18 -104" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.45"/>
+</g>
+
+<circle cx="302" cy="168" r="5" fill="#fdf4ff" opacity="0.6"/>
+<circle cx="318" cy="158" r="3.5" fill="white" opacity="0.5"/>
+</svg>

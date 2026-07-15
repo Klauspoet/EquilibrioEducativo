@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro — Equilibrio Educativo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="Crea tu cuenta en Equilibrio Educativo y accede a apoyo emocional con psicoorientadores.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="/index.html">
+            <img src="/img/logo.png" alt="Equilibrio Educativo" class="nav-logo">
+        </a>
+        <span class="nav-brand">Equilibrio Educativo</span>
+    </nav>
+
+    <header>
+        <img src="/img/logo.png" style="width: 80px; vertical-align: middle; margin-right: 10px; mix-blend-mode: multiply;" alt="Logo">
+        <h1>Equilibrio Educativo</h1>
+        <p>Crea tu cuenta</p>
+    </header>
+
+    <main>
+        <div class="tarjeta-inicio animate-on-scroll">
+            <h2>Registro</h2>
+
+            <div class="campo">
+                <label>Nombre completo</label>
+                <input type="text" id="nombre" placeholder="Tu nombre completo">
+            </div>
+
+            <div class="campo">
+                <label>Correo institucional</label>
+                <input type="email" id="correo" placeholder="nombre@colegio.edu.co">
+            </div>
+
+            <div class="campo">
+                <label>Contraseña</label>
+                <div class="input-wrapper">
+                    <input type="password" id="contrasena" placeholder="Mínimo 6 caracteres">
+                    <button type="button" class="toggle-password" tabindex="-1" aria-label="Mostrar contraseña">👁</button>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label>Confirmar contraseña</label>
+                <div class="input-wrapper">
+                    <input type="password" id="confirmar-contrasena" placeholder="Repite tu contraseña">
+                    <button type="button" class="toggle-password" tabindex="-1" aria-label="Mostrar contraseña">👁</button>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label>Soy...</label>
+                <select id="rol">
+                    <option value="estudiante">Estudiante</option>
+                    <option value="psicoorientador">Psicoorientador</option>
+                </select>
+            </div>
+
+            <div class="campo" id="campo-titulo" style="display:none;">
+                <label>Título profesional (PDF o imagen)</label>
+                <input type="file" id="titulo" accept=".pdf,.jpg,.jpeg,.png">
+                <p style="font-size:0.78rem; color:#8a8aaa; margin-top:6px;">Tu cuenta quedará pendiente hasta que el administrador verifique tu título.</p>
+            </div>
+
+            <div class="campo" id="campo-especialidad" style="display:none;">
+                <label>Especialidad</label>
+                <input type="text" id="especialidad" placeholder="Ej: Ansiedad y estrés">
+            </div>
+
+            <button class="btn-principal" id="btn-registro" style="width:100%; margin-top:10px;">
+                Crear cuenta
+            </button>
+
+            <p style="margin-top:16px; color:#555;">
+                ¿Ya tienes cuenta? <a href="login.html" style="color:#3B82F6;">Inicia sesión</a>
+            </p>
+
+            <p id="mensaje" style="margin-top:12px; color:red;"></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Equilibrio Educativo — Todos los derechos reservados</p>
+    </footer>
+
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
+    <script type="module" src="js/auth.js"></script>
+    <script>
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = btn.parentElement.querySelector('input')
+        const isPassword = input.type === 'password'
+        input.type = isPassword ? 'text' : 'password'
+        btn.textContent = isPassword ? '👁‍🗨' : '👁'
+        btn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña')
+      })
+    })
+    </script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

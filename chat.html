@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat — Equilibrio Educativo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="Chat privado y seguro con tu psicoorientador — Equilibrio Educativo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="/index.html">
+            <img src="/img/logo.png" alt="Equilibrio Educativo" class="nav-logo">
+        </a>
+        <span class="nav-brand">Equilibrio Educativo</span>
+    </nav>
+
+    <div class="app-layout">
+
+        <nav class="sidebar">
+            <img src="/img/logo.png" class="sidebar-logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 12px; padding: 4px;" alt="Logo">
+            <a href="estudiante.html" class="sidebar-icon" title="Inicio" aria-label="Inicio">🏠</a>
+            <a href="#" class="sidebar-icon active" title="Chat" aria-label="Chat">💬</a>
+            <a href="#" class="sidebar-icon" title="Historial" aria-label="Historial">📊</a>
+            <a href="#" class="sidebar-icon" title="Cambiar tema" id="btn-tema" aria-label="Cambiar tema">🌙</a>
+<a href="#" class="sidebar-icon bottom" title="Cerrar sesión" id="btn-logout" aria-label="Cerrar sesión">🚪</a>
+        </nav>
+
+        <main class="page-content">
+            <div class="contenedor-chat">
+
+                <div class="chat-topbar animate-on-scroll">
+                    <div class="chat-avatar" id="avatar-receptor">👤</div>
+                    <div>
+                        <h4 id="nombre-receptor">Cargando...</h4>
+                        <p>En línea</p>
+                    </div>
+                </div>
+
+                <div id="mensajes" class="mensajes animate-on-scroll">
+                    <div class="skeleton" style="height: 40px; width: 60%; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 40px; width: 45%; margin-bottom: 8px; align-self: flex-end;"></div>
+                    <div class="skeleton" style="height: 40px; width: 55%; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 40px; width: 35%; margin-bottom: 8px; align-self: flex-end;"></div>
+                </div>
+
+                <div class="input-chat">
+                    <input
+                        type="text"
+                        id="texto-mensaje"
+                        placeholder="Escribe tu mensaje..."
+                    >
+                    <button id="btn-enviar" class="btn-principal">Enviar ➤</button>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
+    <script type="module" src="js/chat.js"></script>
+<script type="module" src="js/tema.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

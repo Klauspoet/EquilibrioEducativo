@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Estudiante — Equilibrio Educativo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <meta name="description" content="Panel de estudiante — Equilibrio Educativo. Selecciona tu estado emocional y chatea con psicoorientadores.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <div class="est-layout">
+
+        <main class="est-main">
+            <button class="est-mobile-toggle" id="btn-toggle-sidebar" aria-label="Ver conversaciones">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Mis conversaciones</span>
+            </button>
+
+            <div class="dashboard-grid">
+                <div class="conversations-panel" id="conversations-panel">
+                    <div class="conv-panel-header">
+                        <div class="conv-user-avatar" id="sidebar-avatar"></div>
+                        <div class="conv-user-info">
+                            <span class="conv-user-name" id="sidebar-username"></span>
+                            <span class="conv-user-role">estudiante</span>
+                        </div>
+                        <div class="conv-panel-actions">
+                            <button class="conv-panel-btn" id="btn-tema" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+                            <button class="conv-panel-btn" id="btn-logout" title="Cerrar sesión" aria-label="Cerrar sesión">🚪</button>
+                        </div>
+                    </div>
+                    <h3 class="conv-title">Mis Conversaciones</h3>
+                    <div id="lista-conversaciones" class="conv-list"></div>
+                </div>
+
+                <div class="dashboard-main">
+                    <h2 class="est-greeting">Hola, <span id="nombre-usuario"></span> 👋</h2>
+                    <p class="est-subtitle">¿Cómo te sientes hoy?</p>
+
+                    <div class="est-emotion-box" id="est-emotion-box">
+                        <div class="est-emotion-display" id="est-emotion-display"></div>
+                        <div class="emotion-row" id="emotion-row">
+                            <div class="emo-card" data-emotion="triste"><span class="emoji">😔</span><span>Triste</span></div>
+                            <div class="emo-card" data-emotion="regular"><span class="emoji">😐</span><span>Regular</span></div>
+                            <div class="emo-card" data-emotion="bien"><span class="emoji">🙂</span><span>Bien</span></div>
+                            <div class="emo-card" data-emotion="genial"><span class="emoji">😄</span><span>Genial</span></div>
+                            <div class="emo-card" data-emotion="ansioso"><span class="emoji">😰</span><span>Ansioso</span></div>
+                        </div>
+                    </div>
+                    <div id="emocion-status-msg" class="emocion-status-msg" style="display:none;"></div>
+
+                    <h2 class="section-title-accent">Psicoorientadores disponibles</h2>
+                    <div id="lista-psicoorientadores" class="lista-cards">
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <div class="est-sidebar-overlay" id="est-sidebar-overlay"></div>
+
+    <div id="loader-overlay" class="loader-overlay" style="display:none;">
+        <div class="hexagon-loader">
+            <div class="hexagon hex-outer"></div>
+            <div class="hexagon hex-middle"></div>
+            <div class="hexagon hex-inner"></div>
+        </div>
+    </div>
+    <script type="module" src="js/estudiante.js"></script>
+    <script type="module" src="js/tema.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>
